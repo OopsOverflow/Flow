@@ -1,0 +1,41 @@
+{
+  "name": "flow",
+  "description": "A Marcelle Application with SvelteKit",
+  "version": "0.0.0",
+  "keywords": [
+    "marcelle"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "lint": "prettier --plugin-search-dir . --check . && eslint .",
+    "format": "prettier --plugin-search-dir . --write ."
+  },
+  "dependencies": {
+    "@marcellejs/core": "^0.6.0"
+  },
+  "devDependencies": {
+    "@marcellejs/design-system": "^0.6.0",
+    "@marcellejs/devtools": "^0.6.0",
+    "@sveltejs/adapter-static": "next",
+    "@sveltejs/kit": "next",
+    "@typescript-eslint/eslint-plugin": "^5.39.0",
+    "@typescript-eslint/parser": "^5.39.0",
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.1.0",
+    "eslint-plugin-svelte3": "^4.0.0",
+    "prettier": "^2.7.1",
+    "svelte": "^3.50.1",
+    "svelte-check": "^2.9.1",
+    "svelte-preprocess": "^4.10.7",
+    "tslib": "^2.4.0",
+    "typescript": "^4.8.4",
+    "vite": "^4.1.1"
+  }
+}
