@@ -17,6 +17,7 @@ specifiers:
   prettier: ^2.7.1
   svelte: ^3.50.1
   svelte-check: ^2.9.1
+  svelte-mp3: ^1.2.0
   svelte-preprocess: ^4.10.7
   tslib: ^2.4.0
   typescript: ^4.8.4
@@ -24,6 +25,7 @@ specifiers:
 
 dependencies:
   '@marcellejs/core': 0.6.0
+  svelte-mp3: 1.2.0
 
 devDependencies:
   '@marcellejs/design-system': 0.6.0
@@ -3550,6 +3552,10 @@ packages:
     dependencies:
       svelte: 3.55.1
     dev: true
+
+  /svelte-mp3/1.2.0:
+    resolution: {integrity: sha512-YHdIcHi5pThsPmIEiJuOQlycyAFy3QAudV9/BjrdzkmjufG1RYTw/QqDvNUnYX3GaJtmYBt5cTU7BdWKM86zmA==}
+    dev: false
 
   /svelte-preprocess/4.10.7_4x7phaipmicbaooxtnresslofa:
     resolution: {integrity: sha512-sNPBnqYD6FnmdBrUmBCaqS00RyCsCpj2BG58A1JBswNF7b0OKviwxqVrOL/CKyJrLSClrSeqQv5BXNg2RUbPOw==}

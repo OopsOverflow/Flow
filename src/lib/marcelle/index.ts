@@ -4,6 +4,7 @@ import { mobileNet, datasetBrowser, button, dataset, dataStore, textInput, webca
   confidencePlot, toggle, fileUpload
 
 } from '@marcellejs/core';
+import { musicPlayer } from './components';
 
 
 // -----------------------------------------------------------
@@ -137,3 +138,5 @@ const $predictions = input.$images
 
 
 export const plotResults = confidencePlot($predictions);
+
+export const musicPlayerComponent = musicPlayer(new Audio(), "The perfect music for my mood :)");

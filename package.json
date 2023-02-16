@@ -16,7 +16,8 @@
     "format": "prettier --plugin-search-dir . --write ."
   },
   "dependencies": {
-    "@marcellejs/core": "^0.6.0"
+    "@marcellejs/core": "^0.6.0",
+    "svelte-mp3": "^1.2.0"
   },
   "devDependencies": {
     "@marcellejs/design-system": "^0.6.0",
