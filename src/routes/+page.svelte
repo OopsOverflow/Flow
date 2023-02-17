@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { capture, input, label, trainingSet } from '$lib/marcelle';
+  import { captureWebcam, input, label, trainingSet } from '$lib/marcelle';
   import { marcelle } from '$lib/utils';
 
   const count = trainingSet.$count;
@@ -20,7 +20,7 @@
     <div use:marcelle={input} />
     <div>
       <div use:marcelle={label} />
-      <div use:marcelle={capture} />
+      <div use:marcelle={captureWebcam} />
     </div>
     <p>You recorded {$count} instances</p>
   </div>
