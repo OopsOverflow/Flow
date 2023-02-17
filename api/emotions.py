@@ -169,7 +169,7 @@ elif mode == "retrain":
     # Sauvegarder les nouveaux poids du modèle
     model.save_weights('fine_tuned_model.h5')
 
-# emotions will be displayed on your face from the webcam feed
+
 elif mode == "display":
     
 
@@ -191,9 +191,9 @@ elif mode == "display":
     def receive_image():
         file = request.files['image']
         img = cv2.imdecode(np.fromstring(file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
-        predict(img)
+        prediction = predict(img)
         # cv2.imwrite('image.jpg', img)
-        return 'image recue'
+        return prediction
     app.run(debug=True)
     
     
