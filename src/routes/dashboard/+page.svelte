@@ -7,7 +7,7 @@
 </svelte:head>
 
 <div class="content">
-  <h1>Dashboard</h1>
+  <h1 class="bg-red-500">Dashboard</h1>
   <p>
     It is still possible to use dashboards for prototyping purposes, and to display them on demand
     in the application:
