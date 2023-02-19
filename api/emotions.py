@@ -123,7 +123,7 @@ elif mode == "retrain":
     # Charger le modèle existant
     # model.load_weights('model.h5')
     model = load_model('model_all.h5')
-    
+
 
     # Ajouter une nouvelle couche de sortie
     num_classes = 7
@@ -145,11 +145,13 @@ elif mode == "retrain":
     X = []
     y = []
 
-    for emotion_label in ['happy', 'sad', 'angry']:
-        for i in range(3):
-            img = load_img(f"{new_images_dir}/{emotion_label}/{i+1}.jpg", grayscale=True, target_size=(img_width, img_height))
-            X.append(img_to_array(img))
-            y.append(emotion_label)
+    # emotion comes from front
+    emotion_dict = {0: 'Angry', 1: 'Disgust', 2: 'Fear', 3: 'Happy', 4: 'Neutral', 5: 'Sad', 6: 'Surprise'}
+
+    for emotion_label in emotion_dict.keys():
+        img = load_img(request.files["image"], grayscale=True, target_size=(img_width, img_height))
+        X.append(img_to_array(img))
+        y.append(emotion_label)
 
     X = np.array(X)
     y = np.array(y)
@@ -167,11 +169,11 @@ elif mode == "retrain":
     print('Test accuracy:', score[1])
 
     # Sauvegarder les nouveaux poids du modèle
-    model.save_weights('fine_tuned_model.h5')
+    model.save_weights('model_custom.h5')
 
 
 elif mode == "display":
-    
+
 
     from flask import Flask, request
     import cv2
@@ -195,8 +197,6 @@ elif mode == "display":
         # cv2.imwrite('image.jpg', img)
         return prediction
     app.run(debug=True)
-    
-    
 
 
 
@@ -204,4 +204,5 @@ elif mode == "display":
 
 
 
-    
+
+
