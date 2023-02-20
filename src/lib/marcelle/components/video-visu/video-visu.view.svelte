@@ -1,23 +1,79 @@
 <script lang="ts">
   import { ViewContainer } from '@marcellejs/design-system';
-  import { setContext } from 'svelte';
-  import { children } from './store.js';
   import PartComponent from './video-visu.partComponent.svelte';
+  import { derived, writable, get } from 'svelte/store';
   import type {Writable } from 'svelte/store';
 	import { afterUpdate } from 'svelte';
+  import type { VideoParsed, VideoParsedPart } from './video-visu.component';
 
   export let title: string;
   export let options: Record<string, unknown>;
-  export let videoParsed: any;
+  export let videoParsedStore: Writable<VideoParsed>;
   export let currentLabel: Writable<string>;
   export let emotionsColors: Record<string, string>;
-  export let components = [];
+  export let components: PartComponent[] = [];
+
+  let currentPartID = Symbol();
+
+
+  /**Store containing the video parts, automatically updated when the videoParsedStore is updated*/
+  let videoPartStore = derived(videoParsedStore, ($videoParsedStore) => {
+    return $videoParsedStore.parts;
+  });
+
+  /**The current value of the videoParsedStore, avoid using get() for performance*/
+  let videoParsed: VideoParsed;
+  videoParsedStore.subscribe((value) => {
+    videoParsed = value;
+  });
+
+  //Recreate the components when the videoPartStore is updated
+  videoPartStore.subscribe((value) => {
+    updateVideoParts();
+  });
+
+  function displayParts(node){
+    $videoPartStore.forEach((part, idx) => {
+      components[idx] = new PartComponent({
+				target: document.querySelector('#slot'),
+				props: {
+          VideoParsedPart: part,
+          width: getVideoPartWidth(part),
+				},
+			});
+    });
+  }
+
+  /**Update all the parts and after DOM update suscribe to click component of part*/
+  async function updateVideoParts(){
+    components = []; //Remove previous components
+    afterUpdate(() => { //Wait for the components to be created
+      //Apply the click handle to each component
+        components.forEach(child => {    
+            child.unsubscribeFromClick = child.isClicked.subscribe((value) => {
+              //Enable click from one child at a time and update the current label
+              if (value) {
+                if(child.oldClicked == true && currentPartID != child.id){ //Click 2 times on the same do nothing
+                  child.unClick();
+                } else {
+                  currentLabel.set(child.getLabel());
+                  currentPartID = child.id;
+                  //For some reason, log is necessary to update the currentLabel in the DOM
+                  console.log("clicked label : " + child.getLabel() + " - currentLabel : " + get(currentLabel));
+                }
+              }
+              child.archiveClicked();
+            })
+            child.setColor(emotionsColors[child.getLabel()]);
+        })
+      })
+  }
   
 
   /**
    * Get the width of a video part in percent based on the total width of the video
    */
-  function getVideoPartWidth(videoPart) {
+  function getVideoPartWidth(videoPart):number {
     let totalWidthInSec = videoParsed.length;
     let partWidthInSec = videoPart.end - videoPart.start;
 
@@ -27,12 +83,20 @@
 </script>
 
 <ViewContainer {title}>
-  <!--<div>This is a <span class="my-color">custom</span> component with the following options:</div>
-  <p>{JSON.stringify(options)}</p>-->
-  {#each $children as vidPart, i}
+  <h4>{videoParsed.name}</h4>
+  <div id="slot" use:displayParts></div>
+  <div>Current label : {$currentLabel}</div>
+</ViewContainer>
+
+<!--
+  <ViewContainer {title}>
+  <div>This is a <span class="my-color">custom</span> component with the following options:</div>
+  <p>{JSON.stringify(options)}</p>
+  {#each $videoPartStore as vidPart, i}
     <PartComponent bind:this="{components[i]}" VideoParsedPart = {vidPart} width= {getVideoPartWidth(vidPart)}/>
   {/each}
 </ViewContainer>
+-->
 
 <!--
 <style>

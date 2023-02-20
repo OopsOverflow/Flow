@@ -2,7 +2,6 @@
 	import { fade } from 'svelte/transition';
 	import { writable, get } from 'svelte/store';
 	import { onDestroy } from "svelte"
-	
 
 	export let isClicked = writable(false);
 	export let oldClicked = false;
@@ -16,7 +15,7 @@
 
 	let color = 'grey';
 
-	function setColor(color) {
+	export function setColor(color) {
 		this.color = color;
 	}
 
@@ -29,26 +28,27 @@
 
 	function clickHandle(){
 		if(! get(isClicked)){
-			$isClicked.set(true);
+			isClicked.set(true);
 		}
+		//console.log("click : " + getLabel());
 	}
 
 	/**
 	 * Return the label (emotion) of the video segment
 	 */
-	function getLabel() {
+	export function getLabel() {
 		return VideoParsedPart.label;
 	}
 
-	function unClick() {
-		$isClicked.set(false);
+	export function unClick() {
+		isClicked.set(false);
 	}
 
 	/** 
 	 * Archive the value of isClicked to oldClicked.
 	 * This is used to know if the value of isClicked has changed
 	 */
-	function archiveClicked() {
+	export function archiveClicked() {
 		if (get(isClicked) != oldClicked) {
 			oldClicked = get(isClicked);
 			return true;
@@ -60,10 +60,13 @@
 	onDestroy(unsubscribeFromClick);
 </script>
 
-<span>
-	<div class="w-[{width}%] h-2 bg-[{color}}]" on:click={clickHandle}> <!--Ignore accessibility warning, still work. Or would need to restyle a button--> 
-		
-	</div>
+<svelte:options accessors={true}/>
+
+<span><!--Use tailwindcss for hover animation https://stackoverflow.com/questions/65755457/tailwind-increase-height-upwards-on-hover-->
+	<span class="bg-amber-400">The display is the only thing that don't work !!! </span>
+	<span class="w-[{width}%] h-2 bg-red-400" on:click={clickHandle}> <!--Ignore accessibility warning, still work. Or would need to restyle a button--> 
+		- Clickable with label {getLabel()} -
+	</span>
 </span>
 
 <!--<li transition:fade>

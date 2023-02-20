@@ -25,7 +25,7 @@ export interface VideoParsed {
 export class VideoVisu extends Component {
   title: string;
   options: VideoVisuOptions;
-  videoParsed: VideoParsed;
+  videoParsedStore: Writable<VideoParsed>;
   currentLabel: Writable<string> = writable('');
   emotionsColors: Record<string, string>;
   components: any;
@@ -33,9 +33,9 @@ export class VideoVisu extends Component {
 
   constructor(videoParsed: VideoParsed, emotionColors: any, options: VideoVisuOptions = {}) {
     super();
-    this.title = 'videoVisu [custom component 🤖]';
+    this.title = '';
     this.options = options;
-    this.videoParsed = videoParsed;
+    this.videoParsedStore = writable(videoParsed);
     this.emotionsColors = emotionColors;
   }
 
@@ -48,45 +48,16 @@ export class VideoVisu extends Component {
       props: {
         title: this.title,
         options: this.options,
-        videoParsed: this.videoParsed,
+        videoParsedStore: this.videoParsedStore,
         currentLabel: this.currentLabel,
         emotionsColors: this.emotionsColors,
       },
     });
   }
 
-  /**
- * Remove all children from the store 
- */
-  removeAllComponent() {
-    children.update((children) => children.filter((child) => child !== this));
-    this.components = [];
-  }
-
-
-  /**
-   *  Add all children to the store
-   */
-  addAllChildren() {
-    children.set(this.videoParsed.parts);
-    //components get children in svelte DOM, with binding
-    afterUpdate(() => {
-        this.components.forEach(child => {
-                //Enable click from one child at a time and update the current label
-            child.unsubscribeFromClick = child.$isClicked.subscribe((value) => {
-              if (value) {
-                if(child.oldClicked == true && this.currentPartID != child.id){ //Click 2 times on the same do nothing
-                  child.unClick();
-                } else {
-                  this.currentLabel.set(child.getLabel());
-                  this.currentPartID = child.id;
-                }
-              }
-              child.archiveClicked();
-            })
-            child.setColor(this.emotionsColors[child.getLabel()]);
-        })
-      })
+  /**Set the video to visualize. Update $videoParsedStore */
+  setVideo(video : VideoParsed){
+    this.videoParsedStore.set(video);
   }
 
 
