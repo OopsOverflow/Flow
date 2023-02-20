@@ -1,13 +1,12 @@
 <script lang="ts">
   import { ViewContainer } from '@marcellejs/design-system';
   import PartComponent from './video-visu.partComponent.svelte';
-  import { derived, writable, get } from 'svelte/store';
+  import { derived, get } from 'svelte/store';
   import type {Writable } from 'svelte/store';
 	import { afterUpdate } from 'svelte';
-  import type { VideoParsed, VideoParsedPart } from './video-visu.component';
+  import type { VideoParsed } from './video-visu.component';
 
   export let title: string;
-  export let options: Record<string, unknown>;
   export let videoParsedStore: Writable<VideoParsed>;
   export let currentLabel: Writable<string>;
   export let emotionsColors: Record<string, string>;
@@ -37,7 +36,7 @@
       components[idx] = new PartComponent({
 				target: document.querySelector('#slot'),
 				props: {
-          VideoParsedPart: part,
+          videoParsedPart: part,
           width: getVideoPartWidth(part),
 				},
 			});
@@ -77,15 +76,15 @@
     let totalWidthInSec = videoParsed.length;
     let partWidthInSec = videoPart.end - videoPart.start;
 
-    return (partWidthInSec / totalWidthInSec) * 100;
+    return (partWidthInSec / totalWidthInSec) * 90;
   }
 
 </script>
 
 <ViewContainer {title}>
-  <h4>{videoParsed.name}</h4>
-  <div id="slot" use:displayParts></div>
-  <div>Current label : {$currentLabel}</div>
+  <!--<h4 class="py-6">{videoParsed.name}</h4>-->
+  <div id="slot" class="relative" use:displayParts></div>
+  <div class="py-4">Current label : {$currentLabel}</div>
 </ViewContainer>
 
 <!--

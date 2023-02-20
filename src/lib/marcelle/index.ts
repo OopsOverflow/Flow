@@ -17,22 +17,22 @@ export const emotions = ['alert', 'excited', 'elated', 'happy',
                 'upset', 'stressed', 'nervous', 'tense'];
 
 export const emotionsColors = {
-  alert: '#FF0000',
-  excited: '#FF7F00',
-  elated: '#FFFF00',
-  happy: '#00FF00',
-  contented: '#00FFFF',
-  serene: '#0000FF',
-  relaxed: '#8B00FF',
-  calm: '#FF00FF',
-  bored: '#FF0000',
-  sluggish: '#FF7F00',
-  depressed: '#FFFF00',
-  sad: '#00FF00',
-  upset: '#00FFFF',
-  stressed: '#0000FF',
-  nervous: '#8B00FF',
-  tense: '#FF00FF',
+  alert: '#50d71e',//#e59400
+  excited: '#ffae19',
+  elated: '#ffc966',
+  happy: '#ffea00',
+  contented: '#b7cc99',
+  serene: '#94b266',
+  relaxed: '#5e8c19',
+  calm: '#4d8000',
+  bored: '#cccccc',
+  sluggish: '#b2b2b2',
+  depressed: '#999999',
+  sad: '#808080',
+  upset: '#b20000',
+  stressed: '#ff0000',
+  nervous: '#ff7f7f',
+  tense: '#ffb2b2',
 };
 
 
@@ -186,5 +186,5 @@ let video = {
 }
 
 export const videoChart = videoVisu(video, emotionsColors);
-//commented because error "Error: Function called outside component initialization" about afterUpdate methode in ts file
-//videoChart.addAllChildren();
+//Call to change the video
+//setVideo(newVideo);
