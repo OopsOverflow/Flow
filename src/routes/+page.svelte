@@ -3,6 +3,30 @@
   import { marcelle } from '$lib/utils';
 
   const count = trainingSet.$count;
+
+  let file = null;
+
+  const handleChange = (event) => {
+    file = event.target.files[0];
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const response = await fetch('http://localhost:5000/predict', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+    } else {
+      console.error('Failed to get prediction');
+    }
+  };
+
 </script>
 
 <svelte:head>
@@ -16,6 +40,8 @@
     application.
   </p>
 
+  <input type="file" accept="image/*" on:change={handleChange}>
+  <button on:click={handleSubmit}>Submit</button>
   <div class="marcelle notitles">
     <div use:marcelle={input} />
     <div>

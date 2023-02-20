@@ -6,6 +6,8 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
 from flask import Flask, request, jsonify
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
+from flask_cors import CORS, cross_origin
+
 
 # Load the pre-trained model in memory
 # Check if the custom model file exists
@@ -18,11 +20,15 @@ def load_custom_model():
         model = load_model('model_all.h5', compile=False)
     return model
 
+
 # Define a Flask app object
 app = Flask(__name__)
+CORS(app)
+
 
 # Define a function to handle POST requests
 @app.route('/predict', methods=['POST'])
+@cross_origin(origin='*')
 def predict():
     model = load_custom_model()
     # Read the image sent in the request
@@ -47,54 +53,59 @@ def predict():
 
 
 @app.route('/retrain', methods=['POST'])
+@cross_origin(origin='*')
 def retrain():
-    model = load_model('model_all.h5')
+    try:
+        model = load_model('model_all.h5')
 
-    data = request.json['data']
+        data = request.json['data']
 
-    # Ajouter une nouvelle couche de sortie
-    num_classes = 7
-    model.add(Dense(num_classes, activation='softmax'))
+        # Ajouter une nouvelle couche de sortie
+        num_classes = 7
+        model.add(Dense(num_classes, activation='softmax'))
 
-    # Congeler les couches existantes
-    for layer in model.layers[:-1]:
-        layer.trainable = False
+        # Congeler les couches existantes
+        for layer in model.layers[:-1]:
+            layer.trainable = False
 
-    # Compiler le modèle
-    model.compile(optimizer=Adam(lr=0.001),
-                  loss='categorical_crossentropy',
-                  metrics=['accuracy'])
+        # Compiler le modèle
+        model.compile(optimizer=Adam(lr=0.001),
+                      loss='categorical_crossentropy',
+                      metrics=['accuracy'])
 
-    # Charger les nouvelles images
-    new_images_dir = 'new_images'
-    img_width, img_height = 48, 48
+        # Charger les nouvelles images
+        new_images_dir = 'new_images'
+        img_width, img_height = 48, 48
 
-    X = []
-    y = []
+        X = []
+        y = []
 
+        for item in data:
+            img = load_img(item["image"], grayscale=True, target_size=(img_width, img_height))
+            X.append(img_to_array(img))
+            y.append(item["label"].title())
 
-    for item in data:
-        img = load_img(item["image"], grayscale=True, target_size=(img_width, img_height))
-        X.append(img_to_array(img))
-        y.append(item["label"].title())
+        X = np.array(X)
+        y = np.array(y)
 
-    X = np.array(X)
-    y = np.array(y)
+        # Convertir les étiquettes en vecteurs one-hot encoding
+        from keras.utils import to_categorical
+        y = to_categorical(y, num_classes=num_classes)
 
-    # Convertir les étiquettes en vecteurs one-hot encoding
-    from keras.utils import to_categorical
-    y = to_categorical(y, num_classes=num_classes)
+        # Entraîner le modèle avec les nouvelles images
+        epochs = 10
+        model.fit(X, y, epochs=epochs)
 
-    # Entraîner le modèle avec les nouvelles images
-    epochs = 10
-    model.fit(X, y, epochs=epochs)
+        # Évaluer le modèle
+        score = model.evaluate(X, y)
+        print('Test accuracy:', score[1])
 
-    # Évaluer le modèle
-    score = model.evaluate(X, y)
-    print('Test accuracy:', score[1])
+        # Sauvegarder les nouveaux poids du modèle
+        model.save_weights('model_custom.h5')
 
-    # Sauvegarder les nouveaux poids du modèle
-    model.save_weights('model_custom.h5')
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
 
 
 # Run the Flask app

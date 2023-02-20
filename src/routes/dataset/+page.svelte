@@ -2,16 +2,6 @@
   import { trainingSetBrowser } from '$lib/marcelle';
   import { marcelle } from '$lib/utils';
 
-  const respone = await fetch('/api/emotion', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      image: 'I am happy'
-    })
-  });
-
 </script>
 
 <svelte:head>
