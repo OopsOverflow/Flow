@@ -11,6 +11,9 @@
 
 <section>
   <h1>Welcome to Marcelle!</h1>
+  <div class="bg-red-600">
+    Tailwindcss works!
+  </div>
   <p>
     This template application illustrates how to integrate Marcelle pipelines and component in a web
     application.
