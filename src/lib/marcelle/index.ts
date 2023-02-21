@@ -4,7 +4,8 @@ import { mobileNet, datasetBrowser, button, dataset, dataStore, textInput, webca
   confidencePlot, toggle, fileUpload
 
 } from '@marcellejs/core';
-import { musicPlayer, videoVisu, colorLegend } from './components';
+import { musicPlayer, videoVisu, colorLegend, listVisu } from './components';
+import { writable } from 'svelte/store';
 
 
 // -----------------------------------------------------------
@@ -190,8 +191,37 @@ let video = {
   {label: emotionsLabel[10], start: 100, end: 120}],
 }
 
+let musicTitles = writable([
+  {
+    label: emotionsLabel[0],
+    title: 'My alert song',
+  },
+  {
+    label: emotionsLabel[2],
+    title: 'My elated song',
+  },
+  {
+    label: emotionsLabel[6],
+    title: 'My relaxed song',
+  },
+  {
+    label: emotionsLabel[14],
+    title: 'My nervous song',
+  },
+  {
+    label: emotionsLabel[1],
+    title: 'My excited song',
+  },
+  {
+    label: emotionsLabel[10],
+    title: 'My depressed song',
+  },
+]);
+
 export const videoChart = videoVisu(video, emotions.colors);
 //Call to change the video
 //setVideo(newVideo);
 
 export const emotionLegend = colorLegend(emotions);
+
+export const musicTitlesComponent = listVisu(videoChart.currentLabel, musicTitles);
