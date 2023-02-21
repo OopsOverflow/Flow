@@ -3,6 +3,8 @@ import time
 
 import numpy as np
 import cv2
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
 from tensorflow.keras.models import load_model
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
@@ -11,6 +13,15 @@ from tensorflow.keras.preprocessing.image import img_to_array, load_img
 from flask_cors import CORS, cross_origin
 import tempfile
 
+def connection_spotify():
+    # Configuration de l'authentification Spotify
+    auth_manager = SpotifyClientCredentials(
+        client_id=os.environ.get('SPOTIPY_CLIENT_ID'),
+        client_secret=os.environ.get('SPOTIPY_CLIENT_SECRET')
+    )
+    return spotipy.Spotify(auth_manager=auth_manager)
+    
+sp = None
 
 # Load the pre-trained model in memory
 # Check if the custom model file exists
@@ -206,6 +217,9 @@ def retrain():
 @app.route('/recommendation', methods=['POST'])
 @cross_origin(origin='*')
 def get_recommendation():
+    global sp
+    if sp is None:
+        sp = connection_spotify()
     # Récupérer l'ensemble de musiques et le nombre de musiques à recommander envoyés depuis le front-end
     music_data = request.get_json()
     music_ids = [music['id'] for music in music_data["music_data"]]
