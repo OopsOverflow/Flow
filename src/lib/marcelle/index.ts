@@ -225,3 +225,5 @@ export const videoChart = videoVisu(video, emotions.colors);
 export const emotionLegend = colorLegend(emotions);
 
 export const musicTitlesComponent = listVisu(videoChart.currentLabel, musicTitles);
+
+export const plotResultsVideo = confidencePlot($predictions);
