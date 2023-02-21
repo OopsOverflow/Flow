@@ -11,13 +11,13 @@ import { musicPlayer, videoVisu } from './components';
 // DATA MANAGEMENT
 // -----------------------------------------------------------
 
-export const emotions = ['alert', 'excited', 'elated', 'happy', 
+const emotionsLabel = ['alert', 'excited', 'elated', 'happy', 
                   'contented', 'serene', 'relaxed', 'calm',
                 'bored', 'sluggish', 'depressed', 'sad', 
                 'upset', 'stressed', 'nervous', 'tense'];
 
-export const emotionsColors = {
-  alert: '#50d71e',//#e59400
+const emotionsColors = {
+  alert: '#e59400',
   excited: '#ffae19',
   elated: '#ffc966',
   happy: '#ffea00',
@@ -34,6 +34,11 @@ export const emotionsColors = {
   nervous: '#ff7f7f',
   tense: '#ffb2b2',
 };
+
+export const emotions = {
+  labels: emotionsLabel,
+  colors: emotionsColors,
+}
 
 
 
@@ -177,14 +182,14 @@ export const musicPlayerComponent = musicPlayer(new Audio(), "The perfect music 
 let video = {
   name: 'My video',
   length: 120,
-  parts: [{label: emotions[0], start: 0, end: 10}, 
-  {label: emotions[2], start: 10, end: 30}, 
-  {label: emotions[6], start: 30, end: 50}, 
-  {label: emotions[14], start: 50, end: 60}, 
-  {label: emotions[1], start: 60, end: 100}, 
-  {label: emotions[10], start: 100, end: 120}],
+  parts: [{label: emotionsLabel[0], start: 0, end: 10}, 
+  {label: emotionsLabel[2], start: 10, end: 30}, 
+  {label: emotionsLabel[6], start: 30, end: 50}, 
+  {label: emotionsLabel[14], start: 50, end: 60}, 
+  {label: emotionsLabel[1], start: 60, end: 100}, 
+  {label: emotionsLabel[10], start: 100, end: 120}],
 }
 
-export const videoChart = videoVisu(video, emotionsColors);
+export const videoChart = videoVisu(video, emotions.colors);
 //Call to change the video
 //setVideo(newVideo);
