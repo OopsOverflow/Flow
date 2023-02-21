@@ -54,6 +54,9 @@
               if (value) {
                 if(child.oldClicked == true && currentPartID != child.id){ //Click 2 times on the same do nothing
                   child.unClick();
+                } else if(child.oldClicked == true && currentPartID == child.id){ //If click 2 times unselect
+                  child.unClick();
+                  currentLabel.set("");
                 } else {
                   currentLabel.set(child.getLabel());
                   currentPartID = child.id;
