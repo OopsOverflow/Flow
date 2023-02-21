@@ -68,7 +68,7 @@
 <span class="relative h-6"><!--Use tailwindcss for hover animation https://stackoverflow.com/questions/65755457/tailwind-increase-height-upwards-on-hover-->
 	{#if $isClicked}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<span class="inline-block h-2 scale-y-150" style="background-color: {color}; width: {width}%;" on:click={clickHandle}><!-- style necessary, tailwind can't use interpolation with class names-->
+	<span class="inline-block h-2 scale-y-150" style="background-color: {color}; width: {width}%;" on:click={clickHandle}><!-- style necessary, tailwind can't use interpolation with class names https://github.com/tailwindlabs/tailwindcss/discussions/7617-->
 		&nbsp;
 	</span>
 	{:else}
