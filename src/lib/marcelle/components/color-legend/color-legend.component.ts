@@ -5,14 +5,22 @@ export interface ColorLegendOptions {
   [key: string]: unknown;
 }
 
+export interface EmotionInterface {
+  labels: string[];
+  colors: Record<string, string>;
+  [key: string]: unknown;
+}
+
 export class ColorLegend extends Component {
   title: string;
-  options: ColorLegendOptions;
+  colors: Record<string, string>;
+  labels: string[];
 
-  constructor(options: ColorLegendOptions = {}) {
+  constructor(emotions: EmotionInterface) {
     super();
-    this.title = 'colorLegend [custom component 🤖]';
-    this.options = options;
+    this.title = 'Legend';
+    this.labels = emotions.labels;
+    this.colors = emotions.colors;
   }
 
   mount(target?: HTMLElement): void {
@@ -23,7 +31,8 @@ export class ColorLegend extends Component {
       target: t,
       props: {
         title: this.title,
-        options: this.options,
+        labels: this.labels,
+        colors: this.colors,
       },
     });
   }

@@ -4,7 +4,7 @@ import { mobileNet, datasetBrowser, button, dataset, dataStore, textInput, webca
   confidencePlot, toggle, fileUpload
 
 } from '@marcellejs/core';
-import { musicPlayer, videoVisu } from './components';
+import { musicPlayer, videoVisu, colorLegend } from './components';
 
 
 // -----------------------------------------------------------
@@ -193,3 +193,5 @@ let video = {
 export const videoChart = videoVisu(video, emotions.colors);
 //Call to change the video
 //setVideo(newVideo);
+
+export const emotionLegend = colorLegend(emotions);
