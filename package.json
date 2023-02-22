@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@marcellejs/core": "^0.6.0",
+    "echarts": "^5.4.1",
     "svelte-mp3": "^1.2.0"
   },
   "devDependencies": {
