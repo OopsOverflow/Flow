@@ -1,6 +1,7 @@
 <script>
   import { trainingSetBrowser } from '$lib/marcelle';
   import { marcelle } from '$lib/utils';
+
 </script>
 
 <svelte:head>
@@ -9,6 +10,11 @@
 
 <div class="content">
   <h1>Your Dataset</h1>
+
+
+
+  // show the result and accuracy
+
 
   <div class="marcelle card">
     <div use:marcelle={trainingSetBrowser} />
