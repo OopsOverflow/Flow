@@ -12,7 +12,7 @@ export class MusicPlayer extends Component {
   musicTrack: HTMLMediaElement;
   musicTrackTitle: string;
 
-  constructor(musicTrack: HTMLMediaElement, musicTrackTitle:string) {
+  constructor(musicTrack: HTMLMediaElement, musicTrackTitle: string) {
     super();
     this.title = '';
     this.musicTrack = musicTrack;

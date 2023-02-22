@@ -1,21 +1,47 @@
 import '@marcellejs/core/dist/marcelle.css';
-import { mobileNet, datasetBrowser, button, dataset, dataStore, textInput, webcam, text, datasetTable,
-  mlpClassifier, modelParameters, trainingProgress, trainingPlot,
-  confidencePlot, toggle, fileUpload
-
+import {
+  mobileNet,
+  datasetBrowser,
+  button,
+  dataset,
+  dataStore,
+  textInput,
+  webcam,
+  text,
+  datasetTable,
+  mlpClassifier,
+  modelParameters,
+  trainingProgress,
+  trainingPlot,
+  confidencePlot,
+  toggle,
+  fileUpload,
 } from '@marcellejs/core';
 import { musicPlayer, videoVisu, colorLegend, listVisu } from './components';
 import { writable } from 'svelte/store';
-
 
 // -----------------------------------------------------------
 // DATA MANAGEMENT
 // -----------------------------------------------------------
 
-const emotionsLabel = ['alert', 'excited', 'elated', 'happy', 
-                  'contented', 'serene', 'relaxed', 'calm',
-                'bored', 'sluggish', 'depressed', 'sad', 
-                'upset', 'stressed', 'nervous', 'tense'];
+const emotionsLabel = [
+  'alert',
+  'excited',
+  'elated',
+  'happy',
+  'contented',
+  'serene',
+  'relaxed',
+  'calm',
+  'bored',
+  'sluggish',
+  'depressed',
+  'sad',
+  'upset',
+  'stressed',
+  'nervous',
+  'tense',
+];
 
 const emotionsColors = {
   alert: '#e59400',
@@ -39,10 +65,7 @@ const emotionsColors = {
 export const emotions = {
   labels: emotionsLabel,
   colors: emotionsColors,
-}
-
-
-
+};
 
 export const input = webcam();
 
@@ -51,9 +74,7 @@ const featureExtractor = mobileNet();
 export const label = textInput();
 label.title = 'Instance label';
 
-export const audioTitle = text(
-  `No music selected`,
-);
+export const audioTitle = text(`No music selected`);
 audioTitle.title = 'Music title';
 
 export const audioUpload = fileUpload();
@@ -86,31 +107,27 @@ export const audioTrainingSetBrowser = datasetTable(audioTrainingSet);
   .subscribe(trainingSet.create);
   */
 
-  captureAudio.$pressed.subscribe(() => console.log('audioTrainingSet button:', audioTrainingSet.$count.value));
- 
+captureAudio.$pressed.subscribe(() =>
+  console.log('audioTrainingSet button:', audioTrainingSet.$count.value),
+);
+
 input.$images
   .filter(() => captureWebcam.$pressed.value)
-  .map(async (img) => ({ x: await featureExtractor.process(img), y: label.$value.value, thumbnail: input.$thumbnails.value }))
+  .map(async (img) => ({
+    x: await featureExtractor.process(img),
+    y: label.$value.value,
+    thumbnail: input.$thumbnails.value,
+  }))
   .awaitPromises()
   .subscribe(trainingSet.create);
 
-  
-
-  captureAudio.$click.sample(audioUpload.$files.hold())
+captureAudio.$click
+  .sample(audioUpload.$files.hold())
   .map((file) => ({ x: file[0].name, y: label.$value.value }))
   .awaitPromises()
   .subscribe(() => console.log('test audio upload'));
 
-  function testAndLog(){
-    console.log('test and log');
-    console.log('audioTrainingSet:', audioTrainingSet.items.toString());
-    audioTrainingSet.create;
-    //(file) => audioTrainingSet.create(file)
-    console.log('audioFile:', audioUpload.$files);
-    console.log('audioTrainingSet:', audioTrainingSet.items.toString());
-  }
-
-  /*const instancesTest = await audioTrainingSet
+/*const instancesTest = await audioTrainingSet
   .items() // get iterable
   .query({ y: 'sad' }) // query instances with label 'A'
   .select(['id', 'thumbnail', 'name', 'x', 'y']) // select the fields to return
@@ -120,24 +137,21 @@ input.$images
   captureAudio.$pressed.subscribe(() => console.log('audioTrainingSet[sad]:', instancesTest));
   */
 
-  await trainingSet.ready;
+await trainingSet.ready;
 
-  const instancesTest = await trainingSet
+const instancesTest = await trainingSet
   .items() // get iterable  //TypeError: this.instanceService is undefined in manifest.js:18:41
   .toArray(); // convert to array
 
-  captureWebcam.$pressed.subscribe(() => console.log('trainingSet[sad]:', instancesTest));
+captureWebcam.$pressed.subscribe(() => console.log('trainingSet[sad]:', instancesTest));
 
-  //captureAudio.$pressed.subscribe(() => console.log('audioFile:', audioUpload.$files));
+//captureAudio.$pressed.subscribe(() => console.log('audioFile:', audioUpload.$files));
 
 //For dataset table, try to create a view dataset which sift the dataset to only show specific labels
 //https://marcelle.dev/api/data-storage.html#sift
 //https://marcelle.dev/api/components/data-displays.html#datasettable
 //https://echarts.apache.org/en/index.html
 //https://echarts.apache.org/examples/en/editor.html?c=line-polar&lang=js
-
-
-
 
 // -----------------------------------------------------------
 // TRAINING
@@ -157,7 +171,6 @@ export const modelParams = modelParameters(classifier);
 export const progress = trainingProgress(classifier);
 export const plotTraining = trainingPlot(classifier);
 
-
 // -----------------------------------------------------------
 // REAL-TIME PREDICTION
 // -----------------------------------------------------------
@@ -169,29 +182,28 @@ const $predictions = input.$images
   .map(async (img) => classifier.predict(await featureExtractor.process(img)))
   .awaitPromises();
 
-
 export const plotResults = confidencePlot($predictions);
 
-export const musicPlayerComponent = musicPlayer(new Audio(), "The perfect music for my mood :)");
-
-
+export const musicPlayerComponent = musicPlayer(new Audio(), 'The perfect music for my mood :)');
 
 // -----------------------------------------------------------
 // VIDEO REAL-TIME PREDICTION
 // -----------------------------------------------------------
 
-let video = {
+const video = {
   name: 'My video',
   length: 120,
-  parts: [{label: emotionsLabel[0], start: 0, end: 10}, 
-  {label: emotionsLabel[2], start: 10, end: 30}, 
-  {label: emotionsLabel[6], start: 30, end: 50}, 
-  {label: emotionsLabel[14], start: 50, end: 60}, 
-  {label: emotionsLabel[1], start: 60, end: 100}, 
-  {label: emotionsLabel[10], start: 100, end: 120}],
-}
+  parts: [
+    { label: emotionsLabel[0], start: 0, end: 10 },
+    { label: emotionsLabel[2], start: 10, end: 30 },
+    { label: emotionsLabel[6], start: 30, end: 50 },
+    { label: emotionsLabel[14], start: 50, end: 60 },
+    { label: emotionsLabel[1], start: 60, end: 100 },
+    { label: emotionsLabel[10], start: 100, end: 120 },
+  ],
+};
 
-let musicTitles = writable([
+const musicTitles = writable([
   {
     label: emotionsLabel[0],
     title: 'My alert song',

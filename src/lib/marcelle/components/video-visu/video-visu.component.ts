@@ -1,10 +1,7 @@
 import { Component } from '@marcellejs/core';
 import View from './video-visu.view.svelte';
-import PartComponent from './video-visu.partComponent.svelte';
 import { writable, get } from 'svelte/store';
-import type {Writable } from 'svelte/store';
-import { afterUpdate } from 'svelte';
-import { children } from './store.js';
+import type { Writable } from 'svelte/store';
 
 export interface VideoVisuOptions {
   [key: string]: unknown;
@@ -53,10 +50,8 @@ export class VideoVisu extends Component {
   }
 
   /**Set the video to visualize. Update $videoParsedStore */
-  setVideo(video : VideoParsed){
+  setVideo(video: VideoParsed) {
     this.videoParsedStore.set(video);
     this.title = get(this.videoParsedStore).name;
   }
-
-
 }

@@ -10,6 +10,7 @@ export function marcelle<T extends MarcelleComponent>(
   component.mount(node);
 
   return {
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     update(component) {
       console.log(`the value of component '${component}' has changed`);
     },

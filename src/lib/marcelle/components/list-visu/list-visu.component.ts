@@ -1,9 +1,8 @@
 import { Component } from '@marcellejs/core';
 import View from './list-visu.view.svelte';
-import type {Writable } from 'svelte/store';
+import type { Writable } from 'svelte/store';
 
-
-export interface MusicTitles{
+export interface MusicTitles {
   label: string;
   title: string;
 }

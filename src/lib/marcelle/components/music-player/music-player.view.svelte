@@ -5,13 +5,15 @@
   export let title: string;
   export let musicTrack: HTMLMediaElement;
   export let musicTrackTitle: string;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let url = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
 
-  $:console.dir(musicTrack) // Output: audio element object
+  $:console.dir(musicTrack); // Output: audio element object
 </script>
 
 <ViewContainer {title}>
-  <AudioPlayer bind:audio={musicTrack} 
+  <AudioPlayer bind:audio={musicTrack}
   showNext={false} showPrev={false} showTrackNum={false} showShuffle={false}/>
   <div class="legend">Suggested music: {musicTrackTitle}</div>
 </ViewContainer>
