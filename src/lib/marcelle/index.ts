@@ -4,7 +4,7 @@ import { mobileNet, datasetBrowser, button, dataset, dataStore, textInput, webca
   confidencePlot, toggle, fileUpload
 
 } from '@marcellejs/core';
-import { musicPlayer, videoVisu, colorLegend, listVisu } from './components';
+import { musicPlayer, videoVisu, colorLegend, listVisu, emotionChart } from './components';
 import { writable } from 'svelte/store';
 
 
@@ -136,7 +136,7 @@ input.$images
 //https://echarts.apache.org/en/index.html
 //https://echarts.apache.org/examples/en/editor.html?c=line-polar&lang=js
 
-
+export const emotionChartVisu = emotionChart(emotions);
 
 
 // -----------------------------------------------------------
