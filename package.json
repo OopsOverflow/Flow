@@ -18,6 +18,8 @@
   "dependencies": {
     "@marcellejs/core": "^0.6.0",
     "spotify-web-api-node": "^5.0.2",
+    "chart.js": "^4.2.1",
+    "svelte-chartjs": "^3.1.2",
     "svelte-mp3": "^1.2.0"
   },
   "devDependencies": {

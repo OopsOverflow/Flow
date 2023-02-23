@@ -17,7 +17,7 @@ import {
   toggle,
   fileUpload,
 } from '@marcellejs/core';
-import { musicPlayer, videoVisu, colorLegend, listVisu, spotifySearch } from './components';
+import { musicPlayer, videoVisu, colorLegend, listVisu, spotifySearch, emotionChart } from './components';
 import { writable } from 'svelte/store';
 
 // -----------------------------------------------------------
@@ -152,6 +152,23 @@ captureWebcam.$pressed.subscribe(() => console.log('trainingSet[sad]:', instance
 //https://marcelle.dev/api/components/data-displays.html#datasettable
 //https://echarts.apache.org/en/index.html
 //https://echarts.apache.org/examples/en/editor.html?c=line-polar&lang=js
+
+/**
+ * Edit this object with set() to change the music data (! replace old data))
+ */
+let musicData = writable({
+  alert: ['My alert song 1','My alert song 2', 'My alert song 3'],
+  excited: ['My excited song 1','My excited song 2'],
+  elated: ['My elated song 1','My elated song 2','My elated song 3'],
+  happy: ['My happy song 1','My happy song 2','My happy song 3','My happy song 4'],
+  contented: ['My contented song 1','My contented song 2','My contented song 3','My contented song 4'],
+  nervous: ['My nervous song 1','My nervous song 2','My nervous song 3'],
+  relaxed: ['My relaxed song 1','My relaxed song 2'],
+});
+
+export const emotionChartVisu = emotionChart(musicData, emotionsColors);
+
+
 
 // -----------------------------------------------------------
 // TRAINING
