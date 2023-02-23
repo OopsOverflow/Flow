@@ -1,20 +1,16 @@
 import { Component } from '@marcellejs/core';
 import View from './spotify-search.view.svelte';
 
-
 export interface SpotifySearchOptions {
   [key: string]: unknown;
 }
 
-
 export class SpotifySearch extends Component {
   title: string;
- 
 
   constructor() {
     super();
     this.title = 'Spotify search';
-    
   }
 
   mount(target?: HTMLElement): void {
@@ -24,8 +20,8 @@ export class SpotifySearch extends Component {
     this.$$.app = new View({
       target: t,
       props: {
-        title: this.title
-      }
+        title: this.title,
+      },
     });
   }
 }
