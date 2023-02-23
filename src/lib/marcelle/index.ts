@@ -17,7 +17,7 @@ import {
   toggle,
   fileUpload,
 } from '@marcellejs/core';
-import { musicPlayer, videoVisu, colorLegend, listVisu } from './components';
+import { musicPlayer, videoVisu, colorLegend, listVisu, spotifySearch } from './components';
 import { writable } from 'svelte/store';
 
 // -----------------------------------------------------------
@@ -240,6 +240,4 @@ export const musicTitlesComponent = listVisu(videoChart.currentLabel, musicTitle
 
 export const plotResultsVideo = confidencePlot($predictions);
 
-export const spotifySearch = spotifySearch();
-const ss = spotifySearch();
-
+export const songSearch = spotifySearch();
