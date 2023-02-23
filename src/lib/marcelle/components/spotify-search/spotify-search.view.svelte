@@ -57,16 +57,47 @@
       }
     }
   
-    function handleKeydown(event: KeyboardEvent) {
-      if (event.key === 'Enter' && activeResult) {
-        console.log(activeResult);
-      }
-    }
+    
     function formatTime(ms: number) {
         const minutes = Math.floor(ms / 60000);
         const seconds = ((ms % 60000) / 1000).toFixed(0);
         return `${minutes}:${(+seconds < 10 ? '0' : '')}${seconds}`;
     }
+    function handleKeydownInput(event: KeyboardEvent) {
+  if (event.key=== 'ArrowDown' && searchResults.length > 0 ) {
+    document.getElementById('result-0').focus();
+    event.preventDefault();
+  }
+}
+function handleKeydownLi(event: KeyboardEvent,music:any,myId:number) {
+  if (searchResults.length > 1 ) {
+    switch (event.key) {
+      case "ArrowUp":
+        event.preventDefault();
+        if (myId == 0){
+          document.getElementById(`result-${searchResults.length-1}`).focus();
+        }
+        else document.getElementById(`result-${myId-1}`).focus();
+        return
+      case "ArrowDown":
+        event.preventDefault();
+        if (myId==(searchResults.length-1) ){
+          document.getElementById(`result-0`).focus();
+        }
+        else document.getElementById(`result-${myId+1}`).focus();
+        return
+      case "Enter":
+        event.preventDefault();
+        console.log(music);
+        return;
+      default:
+        return;
+    }
+
+
+    
+  }
+}
     export let title: string;
   
   </script>
@@ -155,13 +186,13 @@
 </style>
 <ViewContainer {title}>
 <div class="search">
- <input type="text" placeholder="Rechercher sur Spotify" bind:value={input} on:input={handleSearch}>
+ <input type="text" placeholder="Rechercher sur Spotify" on:keydown={handleKeydownInput} bind:value={input} on:input={handleSearch}>
    
  {#if searchResults.length > 0}
    <div class="results">
      <ul>
-       {#each searchResults as result}
-         <li on:click={() => { activeResult = result; }} class:selected={result === activeResult} on:keydown={handleKeydown} tabindex="0">
+       {#each searchResults as result, i}
+         <li id={`result-${i}`} on:keydown={(e)=>handleKeydownLi(e,result,i)}  on:click={(e) => {console.log(e.currentTarget);  activeResult = result; }} class:selected={result === activeResult}  tabindex="0">
            <div class="result-container">
              <img src={result.image} alt={result.name}>
              <div class="result-details">
