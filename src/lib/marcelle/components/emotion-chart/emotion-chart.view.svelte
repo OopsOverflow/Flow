@@ -1,10 +1,10 @@
 <script lang="ts">
   import { ViewContainer } from '@marcellejs/design-system';
-  import EChart from './EChart.svelte';
+  import {onMount} from 'svelte';
 
   export let title: string;
   export let options: Record<string, unknown>;
-  let option: any;
+  
 
 
   // prettier-ignore
@@ -24,7 +24,7 @@ const days = [
 // prettier-ignore
 const data = [[6,3,10]];
 
-option = {
+let option = {
   title: {
     text: 'Punch Card of Github'
   },
@@ -94,14 +94,34 @@ option = {
 };
 
 
-
-
 </script>
 
+
+<ViewContainer {title}>
+  <div class="relative h-[100%] w-[100%]">
+
+    <div class="testchart">
+      <div id="chartDiv" class="h-[100%] w-[100%]" />
+    </div>
+  </div>
+</ViewContainer>
+
+
+
+
+<style>
+  .testchart {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<!--
+  
 <ViewContainer {title}>
   <div>This is a <span class="my-color">custom</span> component with the following options:</div>
   <p>{JSON.stringify(options)}</p>
-  <EChart option={option} id="Emotion-Chart" />
+  
 </ViewContainer>
 
 <style>
@@ -109,3 +129,5 @@ option = {
     color: seagreen;
   }
 </style>
+
+-->
