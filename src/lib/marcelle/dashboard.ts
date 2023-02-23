@@ -33,7 +33,7 @@ const dash = dashboard({
 dash
   .page('Data Management')
   .sidebar(input, audioUpload, audioTitle)
-  .use([label, captureWebcam, captureAudio], [trainingSetBrowser, audioTrainingSetBrowser]);
+  .use([label, captureWebcam, captureAudio], [trainingSetBrowser], [audioTrainingSetBrowser]);
 dash.page('Training').sidebar(trainButton, progress).use(modelParams, plotTraining);
 dash.page('Real-time Prediction').sidebar(input).use(predToggle, musicPlayerComponent, plotResults);
 dash

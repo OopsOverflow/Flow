@@ -78,27 +78,23 @@ export const audioTitle = text(`No music selected`);
 audioTitle.title = 'Music title';
 
 export const audioUpload = fileUpload();
-audioUpload.$files.subscribe((x) => console.log('fileUpload $files:', x));
 audioUpload.title = 'Upload audio files';
 audioUpload.$files.subscribe((x) => audioTitle.$value.set(x[0].name));
 
 export const captureWebcam = button('Hold to record instances');
 captureWebcam.title = 'Capture webcam instances to the training set';
 
-export const captureAudio = button('Hold to record instances');
+export const captureAudio = button('Press to add music to the training set');
 captureAudio.title = 'Capture music instances to the training set';
 
 export const store = dataStore('localStorage');
-//export const trainingSet = dataset<ImageData, string>('training-set-dashboard', store);
+
 export const trainingSet = dataset('training-set-dashboard', store);
 export const trainingSetBrowser = datasetBrowser(trainingSet);
 
 export const audioStore = dataStore('localStorage');
 export const audioTrainingSet = dataset('audio-training-set-dashboard', audioStore);
-/*export const audioTrainingSetBrowser = datasetTable(audioTrainingSet, [
-  'name',
-]);
-*/
+
 export const audioTrainingSetBrowser = datasetTable(audioTrainingSet);
 
 /*input.$images
@@ -106,10 +102,6 @@ export const audioTrainingSetBrowser = datasetTable(audioTrainingSet);
   .map((x) => ({ x, y: label.$value.value, thumbnail: input.$thumbnails.value }))
   .subscribe(trainingSet.create);
   */
-
-captureAudio.$pressed.subscribe(() =>
-  console.log('audioTrainingSet button:', audioTrainingSet.$count.value),
-);
 
 input.$images
   .filter(() => captureWebcam.$pressed.value)
@@ -121,21 +113,14 @@ input.$images
   .awaitPromises()
   .subscribe(trainingSet.create);
 
-captureAudio.$click
-  .sample(audioUpload.$files.hold())
-  .map((file) => ({ x: file[0].name, y: label.$value.value }))
-  .awaitPromises()
-  .subscribe(() => console.log('test audio upload'));
-
-/*const instancesTest = await audioTrainingSet
-  .items() // get iterable
-  .query({ y: 'sad' }) // query instances with label 'A'
-  .select(['id', 'thumbnail', 'name', 'x', 'y']) // select the fields to return
-  .toArray(); // convert to array
-
-
-  captureAudio.$pressed.subscribe(() => console.log('audioTrainingSet[sad]:', instancesTest));
-  */
+captureAudio.$click.sample(audioUpload.$files).subscribe((x) => {
+  audioTrainingSet
+    .create({
+      x: x[0].name,
+      y: label.$value.value,
+    })
+    .then((r) => console.log(r));
+});
 
 await trainingSet.ready;
 
