@@ -239,3 +239,7 @@ export const emotionLegend = colorLegend(emotions);
 export const musicTitlesComponent = listVisu(videoChart.currentLabel, musicTitles);
 
 export const plotResultsVideo = confidencePlot($predictions);
+
+export const spotifySearch = spotifySearch();
+const ss = spotifySearch();
+
