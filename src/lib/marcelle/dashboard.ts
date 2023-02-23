@@ -23,7 +23,7 @@ import {
   musicTitlesComponent,
   plotResultsVideo,
   songSearch,
-  emotionChartVisu
+  emotionChartVisu,
 } from '.';
 
 const dash = dashboard({
@@ -32,7 +32,14 @@ const dash = dashboard({
   closable: true,
 });
 
-dash.page('Data Management').sidebar(input, audioUpload, audioTitle).use([label, captureWebcam, captureAudio], [trainingSetBrowser, audioTrainingSetBrowser, emotionChartVisu], [songSearch]);
+dash
+  .page('Data Management')
+  .sidebar(input, audioUpload, audioTitle)
+  .use(
+    [label, captureWebcam, captureAudio],
+    [trainingSetBrowser, audioTrainingSetBrowser, emotionChartVisu],
+    [songSearch],
+  );
 dash.page('Training').sidebar(trainButton, progress).use(modelParams, plotTraining);
 dash.page('Real-time Prediction').sidebar(input).use(predToggle, musicPlayerComponent, plotResults);
 dash

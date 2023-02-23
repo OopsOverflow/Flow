@@ -3,12 +3,12 @@
     import SpotifyWebApi from 'spotify-web-api-node';
     import { onMount } from 'svelte';
 
-    
+
     const spotifyApi = new SpotifyWebApi();
     const clientId = import.meta.env.VITE_SPOTIPY_CLIENT_ID;
     const clientSecret = import.meta.env.VITE_SPOTIPY_CLIENT_SECRET;
     onMount(() => {
-    
+
 
     // Obtenir le jeton d'accès en utilisant les identifiants de l'application
     const credentials = btoa(`${clientId}:${clientSecret}`);
@@ -40,7 +40,7 @@
         searchResults = [];
         return;
       }
-  
+
       try {
         const data = await spotifyApi.searchTracks(input);
         searchResults = data.body.tracks.items.map((track : any) => ({
@@ -56,8 +56,8 @@
         console.error(error);
       }
     }
-  
-    
+
+
     function formatTime(ms: number) {
         const minutes = Math.floor(ms / 60000);
         const seconds = ((ms % 60000) / 1000).toFixed(0);
@@ -74,32 +74,33 @@ function handleKeydownLi(event: KeyboardEvent,music:any,myId:number) {
     switch (event.key) {
       case "ArrowUp":
         event.preventDefault();
-        if (myId == 0){
+        if (myId === 0){
           document.getElementById(`result-${searchResults.length-1}`).focus();
         }
         else document.getElementById(`result-${myId-1}`).focus();
-        return
+        return;
       case "ArrowDown":
         event.preventDefault();
-        if (myId==(searchResults.length-1) ){
+        if (myId===(searchResults.length-1) ){
           document.getElementById(`result-0`).focus();
         }
         else document.getElementById(`result-${myId+1}`).focus();
-        return
+        return;
       case "Enter":
         event.preventDefault();
         console.log(music);
-        return;
+        break;
+
       default:
-        return;
+
     }
 
 
-    
+
   }
 }
     export let title: string;
-  
+
   </script>
  <style>
   .search {
@@ -187,7 +188,7 @@ function handleKeydownLi(event: KeyboardEvent,music:any,myId:number) {
 <ViewContainer {title}>
 <div class="search">
  <input type="text" placeholder="Rechercher sur Spotify" on:keydown={handleKeydownInput} bind:value={input} on:input={handleSearch}>
-   
+
  {#if searchResults.length > 0}
    <div class="results">
      <ul>
@@ -199,7 +200,7 @@ function handleKeydownLi(event: KeyboardEvent,music:any,myId:number) {
                <div class="result-name">{result.name}</div>
                <div class="result-artist">{result.artist}</div>
              </div>
-             
+
              <div class="result-time">{formatTime(result.duration_ms)}</div>
            </div>
          </li>

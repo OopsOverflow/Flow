@@ -9,13 +9,13 @@
   export let musicData: Writable<MusicList>;
   export let currentLabel: Writable<string>;
   export let emotionsColors: Record<string, string>;
-  
+
 
   //let chart: ChartJS;
   let chart;
-  
 
-  const data = { 
+
+  const data = {
     datasets: [//dummy data
       {
         data: [300, 50, 100, 40, 120],
@@ -40,40 +40,50 @@
         position: 'bottom',
       },
     },
+  };
+
+  /**
+   * Clear the chart data while keeping the reference
+   */
+  function clearData() {
+    data.datasets[0].data.length = 0;
+    data.datasets[0].backgroundColor.length = 0;
+    data.labels.length = 0;
   }
 
+  /**
+   * Register data in $musicData to the chart
+   */
+  function registerData() {
+    if(chart){
+      clearData();
 
-musicData.subscribe((newData) => {
-  console.log(newData);
-  registerData();      
-});
+      for (const [key, value] of Object.entries($musicData)) {
+        data.datasets[0].data.push(value.length);
+        data.datasets[0].backgroundColor.push(emotionsColors[key]);
+        data.labels.push(key);
 
-/**
- * Register data in $musicData to the chart
-*/
-function registerData() {
-  if(chart){
-    clearData();
-
-    for (const [key, value] of Object.entries($musicData)) {
-      data.datasets[0].data.push(value.length);
-      data.datasets[0].backgroundColor.push(emotionsColors[key]);
-      data.labels.push(key);
-
-      chart.update();
+        chart.update();
+      }
     }
+
   }
 
-}
 
-/**
- * Clear the chart data while keeping the reference
- */
-function clearData() {
-  data.datasets[0].data.length = 0;
-  data.datasets[0].backgroundColor.length = 0;
-  data.labels.length = 0;
-}
+  musicData.subscribe((newData) => {
+    console.log(newData);
+    registerData();
+  });
+
+  function registerLabelElementAtEvent(element) {
+    if (!element.length) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { datasetIndex, index } = element[0];
+
+    currentLabel.set(data.labels[index]);
+  }
+
 
 function onClick(event) {
     if (!chart) {
@@ -83,13 +93,7 @@ function onClick(event) {
     //register label element at event
     registerLabelElementAtEvent(getElementAtEvent(chart, event));
   }
-function registerLabelElementAtEvent(element) {
-    if (!element.length) return;
 
-    const { datasetIndex, index } = element[0];
-
-    currentLabel.set(data.labels[index]);
-}
 
   import {
     Chart as ChartJS,
@@ -104,7 +108,7 @@ function registerLabelElementAtEvent(element) {
 
   onMount(() => {
     registerData();
-  
+
   });
 
 

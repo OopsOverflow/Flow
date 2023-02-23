@@ -1,7 +1,7 @@
 import { Component } from '@marcellejs/core';
 import View from './emotion-chart.view.svelte';
 import { writable } from 'svelte/store';
-import type {Writable } from 'svelte/store';
+import type { Writable } from 'svelte/store';
 
 export interface EmotionChartOptions {
   [key: string]: unknown;
@@ -10,7 +10,7 @@ export interface EmotionChartOptions {
 /**
  * MusicList is a dictionary of emotion and music list
  */
-export interface MusicList{
+export interface MusicList {
   [emotion: string]: string[];
 }
 
