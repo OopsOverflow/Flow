@@ -67,7 +67,7 @@ export const emotions = {
   colors: emotionsColors,
 };
 
-export const input = webcam();
+export const input = webcam({ width: 500, height: 500 });
 
 const featureExtractor = mobileNet();
 
@@ -97,21 +97,57 @@ export const audioTrainingSet = dataset('audio-training-set-dashboard', audioSto
 
 export const audioTrainingSetBrowser = datasetTable(audioTrainingSet);
 
-/*input.$images
-  .filter(() => captureWebcam.$pressed.value)
-  .map((x) => ({ x, y: label.$value.value, thumbnail: input.$thumbnails.value }))
-  .subscribe(trainingSet.create);
-  */
+function dataURLtoFile(dataurl, filename) {
+  // eslint-disable-next-line prefer-const
+  let arr = dataurl.split(',');
+  const mime = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], filename, { type: mime });
+}
+
+const getEmotion = async (img: ImageData) => {
+  console.log(img.height, img.width);
+  // convert imageData to file
+  const canvas = document.createElement('canvas');
+  canvas.width = img.width;
+  canvas.height = img.height;
+  const context = canvas.getContext('2d');
+  context.putImageData(img, 0, 0);
+
+  // Convert the canvas data to Base64
+  const base64Image = canvas.toDataURL();
+
+  // Convert the Base64 data to a file
+  const file = dataURLtoFile(base64Image, 'image.png');
+
+  // append file to form data
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const res = await fetch('http://localhost:5000/predict', {
+    method: 'POST',
+    body: formData,
+  });
+
+  const { emotion, accuracy } = await res.json();
+  return { emotion, accuracy };
+};
 
 input.$images
   .filter(() => captureWebcam.$pressed.value)
-  .map(async (img) => ({
-    x: await featureExtractor.process(img),
-    y: label.$value.value,
-    thumbnail: input.$thumbnails.value,
-  }))
-  .awaitPromises()
-  .subscribe(trainingSet.create);
+  .subscribe(async (img) => {
+    const emotion = await getEmotion(img);
+    trainingSet.create({
+      x: await featureExtractor.process(img),
+      y: emotion.emotion,
+      thumbnail: input.$thumbnails.value,
+    });
+  });
 
 captureAudio.$click.sample(audioUpload.$files).subscribe((x) => {
   audioTrainingSet
@@ -124,11 +160,13 @@ captureAudio.$click.sample(audioUpload.$files).subscribe((x) => {
 
 await trainingSet.ready;
 
-const instancesTest = await trainingSet
-  .items() // get iterable  //TypeError: this.instanceService is undefined in manifest.js:18:41
-  .toArray(); // convert to array
-
-captureWebcam.$pressed.subscribe(() => console.log('trainingSet[sad]:', instancesTest));
+captureWebcam.$pressed.subscribe((x) => {
+  if (x) {
+    captureWebcam.title = 'Stop recording';
+  } else {
+    captureWebcam.title = 'Hold to record instances';
+  }
+});
 
 //captureAudio.$pressed.subscribe(() => console.log('audioFile:', audioUpload.$files));
 

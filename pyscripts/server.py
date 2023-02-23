@@ -20,7 +20,7 @@ def connection_spotify():
         client_secret=os.environ.get('SPOTIPY_CLIENT_SECRET')
     )
     return spotipy.Spotify(auth_manager=auth_manager)
-    
+
 sp = None
 
 # Load the pre-trained model in memory
@@ -212,7 +212,7 @@ def retrain():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
 
-    
+
 # Endpoint pour recevoir un ensemble de musiques depuis le front-end et retourner une recommandation Spotify
 @app.route('/recommendation', methods=['POST'])
 @cross_origin(origin='*')
@@ -227,10 +227,10 @@ def get_recommendation():
 
     # Récupérer une recommandation de musiques basée sur les musiques reçues depuis le front-end
     recommendation = sp.recommendations(seed_tracks=music_ids, limit=num_recommendations)
-    
+
     # Extraire les noms de musiques, artistes,url,image,preview_url des musiques recommandées
     recommended_musics = [{'name':track['name'],'artists': ', '.join([artist['name'] for artist in track['artists']]),"url":track["external_urls"]["spotify"],"preview_url":track["preview_url"],"img":[img for img in track['album']["images"] if img['height'] == 64][0]['url']} for track in recommendation['tracks']]
-    
+
     # Retourner les musiques recommandées sous forme de JSON
     return jsonify({'recommended_musics': recommended_musics})
 
