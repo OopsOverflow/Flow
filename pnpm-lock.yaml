@@ -7,6 +7,7 @@ specifiers:
   '@sveltejs/adapter-static': next
   '@sveltejs/adapter-vercel': ^2.0.2
   '@sveltejs/kit': ^1.5.0
+  '@types/spotify-web-api-node': ^5.0.7
   '@typescript-eslint/eslint-plugin': ^5.39.0
   '@typescript-eslint/parser': ^5.39.0
   autoprefixer: ^10.4.13
@@ -38,6 +39,7 @@ devDependencies:
   '@sveltejs/adapter-static': 1.0.0-next.50_@sveltejs+kit@1.5.3
   '@sveltejs/adapter-vercel': 2.0.2_@sveltejs+kit@1.5.3
   '@sveltejs/kit': 1.5.3_svelte@3.55.1+vite@4.1.1
+  '@types/spotify-web-api-node': 5.0.7
   '@typescript-eslint/eslint-plugin': 5.51.0_b635kmla6dsb4frxfihkw4m47e
   '@typescript-eslint/parser': 5.51.0_4vsywjlpuriuw3tl5oq6zy5a64
   autoprefixer: 10.4.13_postcss@8.4.21
@@ -992,6 +994,16 @@ packages:
   /@types/socket.io-client/1.4.36:
     resolution: {integrity: sha512-ZJWjtFBeBy1kRSYpVbeGYTElf6BqPQUkXDlHHD4k/42byCN5Rh027f4yARHCink9sKAkbtGZXEAmR0ZCnc2/Ag==}
     dev: false
+
+  /@types/spotify-api/0.0.20:
+    resolution: {integrity: sha512-HRBwiOthYAT0r/vUQlGlNTdXMnPg/CS3MzTuQKDy2PtalUDXhj0Ep9YZ4tXmL68K0j7FMcLFcYTzy7k7nVu5mg==}
+    dev: true
+
+  /@types/spotify-web-api-node/5.0.7:
+    resolution: {integrity: sha512-8ajd4xS3+l4Zau1OyggPv7DjeSFEIGYvG5Q8PbbBMKiaRFD53IkcvU4Bx4Ijyzw+l+Kc09L5L+MXRj0wyVLx9Q==}
+    dependencies:
+      '@types/spotify-api': 0.0.20
+    dev: true
 
   /@types/webgl-ext/0.0.30:
     resolution: {integrity: sha512-LKVgNmBxN0BbljJrVUwkxwRYqzsAEPcZOe6S2T6ZaBDIrFp0qu4FNlpc5sM1tGbXUYFgdVQIoeLk1Y1UoblyEg==}
