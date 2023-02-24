@@ -206,7 +206,7 @@ def retrain():
         # remove extra dimensions and reshape image
         img = np.expand_dims(img, axis=-1)
         img = np.expand_dims(img, axis=0)
-        img = img.reshape((-1, 48, 48, 1))
+        img = img.reshape((48, 48, 1))
 
         # preprocess image data
         img = img.astype('float32') / 255.0
@@ -257,8 +257,8 @@ def get_recommendation():
     # Récupérer une recommandation de musiques basée sur les musiques reçues depuis le front-end
     recommendation = sp.recommendations(seed_tracks=music_ids, limit=num_recommendations)
 
-    # Extraire les noms de musiques, artistes,url,image,preview_url des musiques recommandées
-    recommended_musics = [{'name':track['name'],'artists': ', '.join([artist['name'] for artist in track['artists']]),"url":track["external_urls"]["spotify"],"preview_url":track["preview_url"],"img":[img for img in track['album']["images"] if img['height'] == 64][0]['url']} for track in recommendation['tracks']]
+    # Extraire les noms de musiques, artistes,url,image,preview_url et id des musiques recommandées
+    recommended_musics = [{'id':track['id'],'name':track['name'],'artists': ', '.join([artist['name'] for artist in track['artists']]),"url":track["external_urls"]["spotify"],"preview_url":track["preview_url"],"img":[img for img in track['album']["images"] if img['height'] == 64][0]['url']} for track in recommendation['tracks']]
 
     # Retourner les musiques recommandées sous forme de JSON
     return jsonify({'recommended_musics': recommended_musics})

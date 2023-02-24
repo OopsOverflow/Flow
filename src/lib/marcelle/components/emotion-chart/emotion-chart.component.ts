@@ -19,12 +19,14 @@ export class EmotionChart extends Component {
   musicData: Writable<MusicList>;
   currentLabel: Writable<string> = writable('None');
   emotionsColors: Record<string, string>;
+  bdd: any
 
-  constructor(musicData: Writable<MusicList>, emotionsColors: Record<string, string>) {
+  constructor(musicData: Writable<MusicList>, emotionsColors: Record<string, string>,bdd:any) {
     super();
     this.title = 'Musics registered :';
     this.musicData = musicData;
     this.emotionsColors = emotionsColors;
+    this.bdd = bdd;
   }
 
   mount(target?: HTMLElement): void {
@@ -38,6 +40,7 @@ export class EmotionChart extends Component {
         musicData: this.musicData,
         currentLabel: this.currentLabel,
         emotionsColors: this.emotionsColors,
+        bdd: this.bdd
       },
     });
   }

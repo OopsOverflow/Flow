@@ -9,10 +9,43 @@
   export let musicData: Writable<MusicList>;
   export let currentLabel: Writable<string>;
   export let emotionsColors: Record<string, string>;
+  export let bdd
 
 
   //let chart: ChartJS;
   let chart;
+  let recommendedMusics = [];
+  let selectedMusics = [];
+
+  async function getRecommendedMusics( ) {
+    if ($currentLabel === 'None') return;
+    let musicData ;
+    bdd.find({"y":$currentLabel})
+    .then(async function(liste){console.log("liste",liste);
+      musicData  = liste.data.map(function(dictionnaire){
+        return {"id":dictionnaire.ide};
+      })
+      console.log("music1",musicData);
+      const numRecommendations = 5;
+    console.log("appel",{ music_data: musicData, num_recommendations: numRecommendations })
+    const response = await fetch('http://127.0.0.1:5000/recommendation', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ music_data: musicData, num_recommendations: numRecommendations })
+    });
+
+    const json = await response.json();
+    recommendedMusics = json.recommended_musics;
+    })
+  
+    
+  }
+  function selectMusic(music) {
+    selectedMusics = [...selectedMusics, music];
+  }
+
 
 
   const data = {
@@ -109,6 +142,8 @@ function onClick(event) {
 
   onMount(() => {
     registerData();
+    
+
 
   });
 
@@ -125,7 +160,7 @@ function onClick(event) {
     <div class='mb-2'>
       Musics labeled with : {$currentLabel}
     </div>
-    {#if $currentLabel !== 'None'}
+    {#if $currentLabel != 'None'}
       {#each $musicData[$currentLabel] as musicTitle}
         <div>
           {musicTitle}
@@ -135,6 +170,20 @@ function onClick(event) {
       <div>
         Please select an emotion by clicking on the chart
       </div>
-    {/if}
+    
+
+    <h1>List of music recommendations :</h1>
+
+{#each recommendedMusics as music}
+  <div on:click={() => { bdd.create({x:music.name,y:$currentLabel,artist:music.artist}) ;    selectMusic(music)}}>
+    <h2>{music.name}</h2>
+    <p>{music.artists}</p>
   </div>
+{/each}
+
+
+
+<button on:click={getRecommendedMusics}>Get recommendations</button>  
+  </div>
+  {/if}  
 </ViewContainer>
