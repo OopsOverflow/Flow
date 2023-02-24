@@ -27,9 +27,18 @@
     videoParsed = value;
   });
 
+  let suscribeFunction = () => {};
+
+  afterUpdate(() => {
+    suscribeFunction();
+    //Remove the suscribe function to avoid multiple suscribe
+    suscribeFunction = () => {};
+  });
+
   /**Update all the parts and after DOM update suscribe to click component of part*/
   async function updateVideoParts(){
     components = []; //Remove previous components
+    /*
     afterUpdate(() => { //Wait for the components to be created
       //Apply the click handle to each component
       components.forEach((child : typeof PartComponent) => {
@@ -50,7 +59,28 @@
         });
         child.setColor(emotionsColors[child.getLabel()]);
       });
-    });
+    });*/
+    suscribeFunction = () => {
+      //Apply the click handle to each component
+      components.forEach((child : typeof PartComponent) => {
+        // eslint-disable-next-line no-param-reassign
+        child.unsubscribeFromClick = child.isClicked.subscribe((value) => {
+          //Enable click from one child at a time and update the current label
+          if (value) {
+            if(child.oldClicked === true && currentPartID !== child.id){ //Click 2 times on the same do nothing
+              child.unClick();
+            } else {
+              currentLabel.set(child.getLabel());
+              currentPartID = child.id;
+              //For some reason, log is necessary to update the currentLabel in the DOM
+              console.log("clicked label : " + child.getLabel() + " - currentLabel : " + get(currentLabel));
+            }
+          }
+          child.archiveClicked();
+        });
+        child.setColor(emotionsColors[child.getLabel()]);
+      });
+    };
   }
 
   //Recreate the components when the videoPartStore is updated
