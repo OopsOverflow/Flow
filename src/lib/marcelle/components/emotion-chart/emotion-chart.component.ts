@@ -17,7 +17,7 @@ export interface MusicList {
 export class EmotionChart extends Component {
   title: string;
   musicData: Writable<MusicList>;
-  currentLabel: Writable<string> = writable('');
+  currentLabel: Writable<string> = writable('None');
   emotionsColors: Record<string, string>;
 
   constructor(musicData: Writable<MusicList>, emotionsColors: Record<string, string>) {

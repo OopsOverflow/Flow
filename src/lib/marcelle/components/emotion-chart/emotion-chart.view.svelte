@@ -92,6 +92,7 @@ function onClick(event) {
 
     //register label element at event
     registerLabelElementAtEvent(getElementAtEvent(chart, event));
+    //console.log($musicData[$currentLabel]);
   }
 
 
@@ -121,29 +122,19 @@ function onClick(event) {
     <div>
       <PolarArea bind:chart={chart} on:click={onClick} {data} {options} />
     </div>
-    <div>
-      Current label : {$currentLabel}
+    <div class='mb-2'>
+      Musics labeled with : {$currentLabel}
     </div>
+    {#if $currentLabel != 'None'}
+      {#each $musicData[$currentLabel] as musicTitle}
+        <div>
+          {musicTitle}
+        </div>
+      {/each}
+    {:else}
+      <div>
+        Please select an emotion by clicking on the chart
+      </div>
+    {/if}    
   </div>
 </ViewContainer>
-
-<!--
-<ViewContainer {title}>
-  <div class="relative h-[100%] w-[100%]">
-
-    <div class="testchart">
-      <div id="chartDiv" class="h-[100%] w-[100%]" />
-    </div>
-  </div>
-</ViewContainer>
--->
-
-
-
-
-<style>
-  .testchart {
-    width: 100%;
-    height: 100%;
-  }
-</style>
