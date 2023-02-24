@@ -175,7 +175,7 @@ function onClick(event) {
     <h1>List of music recommendations :</h1>
 
 {#each recommendedMusics as music}
-  <div on:click={() => { bdd.create({x:music.name,y:$currentLabel,artist:music.artist}) ;    selectMusic(music)}}>
+  <div on:click={() => { bdd.create({ide:music.id, x:music.name,y:$currentLabel,artist:music.artist}) ;    selectMusic(music)}}>
     <h2>{music.name}</h2>
     <p>{music.artists}</p>
   </div>
