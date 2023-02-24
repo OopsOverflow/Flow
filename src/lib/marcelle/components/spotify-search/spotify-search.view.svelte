@@ -100,6 +100,7 @@ function handleKeydownLi(event: KeyboardEvent,music:any,myId:number) {
   }
 }
     export let title: string;
+    export let bdd:any
 
   </script>
  <style>
@@ -193,7 +194,7 @@ function handleKeydownLi(event: KeyboardEvent,music:any,myId:number) {
    <div class="results">
      <ul>
        {#each searchResults as result, i}
-         <li id={`result-${i}`} on:keydown={(e)=>handleKeydownLi(e,result,i)}  on:click={(e) => {console.log(e.currentTarget);  activeResult = result; }} class:selected={result === activeResult}  tabindex="0">
+         <li id={`result-${i}`} on:keydown={(e)=>handleKeydownLi(e,result,i)}  on:click={(e) => {bdd.create({x:result.name,y:document.querySelector("#component-002 > div > div > select").value,ide:result.id,id:result.id,artist:result.artist});console.log(e.currentTarget);  activeResult = result; }} class:selected={result === activeResult}  tabindex="0">
            <div class="result-container">
              <img src={result.image} alt={result.name}>
              <div class="result-details">

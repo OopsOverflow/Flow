@@ -94,6 +94,7 @@ const musicData = writable({
   relaxed: ['My relaxed song 1', 'My relaxed song 2'],
 });
 
+
 export const input = webcam({ width: 500, height: 500 });
 
 const featureExtractor = mobileNet();
@@ -121,6 +122,22 @@ export const trainingSetBrowser = datasetBrowser(trainingSet);
 
 export const audioStore = dataStore('localStorage');
 export const audioTrainingSet = dataset('audio-training-set-dashboard', audioStore);
+
+audioTrainingSet.$changes
+.filter((change) => change[0]!=undefined)
+.filter((change) => change[0].level==='instance')
+.subscribe( change => { const y_ = change[0].data.y;
+                        audioTrainingSet.find({"y":y_})
+                        .then(liste =>{
+                          musicData.update(oldValue => {
+                            oldValue[y_] = liste.data.map(function(dictionnaire) {
+                              return dictionnaire.x;
+                            })
+                            return oldValue;
+                          });
+                          
+                        })                     
+                      });
 
 export const audioTrainingSetBrowser = datasetTable(audioTrainingSet);
 
@@ -300,4 +317,4 @@ export const musicTitlesComponent = listVisu(videoChart.currentLabel, musicTitle
 
 export const plotResultsVideo = confidencePlot($predictions);
 
-export const songSearch = spotifySearch();
+export const songSearch = spotifySearch(audioTrainingSet);

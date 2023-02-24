@@ -28,7 +28,7 @@ import {
 
 const dash = dashboard({
   title: 'YourFlow',
-  author: 'Tonny, Houssem, and Mathilde',
+  author: 'Tony, Houssem, and Mathilde',
   closable: true,
 });
 

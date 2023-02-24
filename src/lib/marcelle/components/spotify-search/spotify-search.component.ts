@@ -7,10 +7,12 @@ export interface SpotifySearchOptions {
 
 export class SpotifySearch extends Component {
   title: string;
+  bdd:any;
 
-  constructor() {
+  constructor(bdd) {
     super();
     this.title = 'Spotify search';
+    this.bdd = bdd
   }
 
   mount(target?: HTMLElement): void {
@@ -21,6 +23,7 @@ export class SpotifySearch extends Component {
       target: t,
       props: {
         title: this.title,
+        bdd: this.bdd
       },
     });
   }
