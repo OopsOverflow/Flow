@@ -69,7 +69,6 @@ const musicData = writable({
   Disgust: [],
 });
 
-
 export const input = webcam({ width: 500, height: 500 });
 
 const featureExtractor = mobileNet();
@@ -95,20 +94,20 @@ export const audioStore = dataStore('localStorage');
 export const audioTrainingSet = dataset('audio-training-set-dashboard', audioStore);
 
 audioTrainingSet.$changes
-.filter((change) => change[0]!=undefined)
-.filter((change) => change[0].level==='instance')
-.subscribe( change => { const y_ = change[0].data.y;
-                        audioTrainingSet.find({"y":y_})
-                        .then(liste =>{
-                          musicData.update(oldValue => {
-                            oldValue[y_] = liste.data.map(function(dictionnaire) {
-                              return dictionnaire.x;
-                            })
-                            return oldValue;
-                          });
-
-                        })
-                      });
+  .filter((change) => change[0] !== undefined)
+  .filter((change) => change[0].level === 'instance')
+  .subscribe((change) => {
+    const y_ = change[0].data.y;
+    audioTrainingSet.find({ y: y_ }).then((liste) => {
+      musicData.update((oldValue) => {
+        // eslint-disable-next-line no-param-reassign
+        oldValue[y_] = liste.data.map(function (dictionnaire) {
+          return dictionnaire.x;
+        });
+        return oldValue;
+      });
+    });
+  });
 
 export const audioTrainingSetBrowser = datasetTable(audioTrainingSet);
 

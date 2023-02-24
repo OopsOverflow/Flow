@@ -100,7 +100,7 @@ function handleKeydownLi(event: KeyboardEvent,music:any,myId:number) {
   }
 }
     export let title: string;
-    export let bdd:any
+    export let bdd:any;
 
 </script>
 

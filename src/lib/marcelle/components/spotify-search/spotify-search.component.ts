@@ -12,7 +12,7 @@ export class SpotifySearch extends Component {
   constructor(bdd) {
     super();
     this.title = 'Spotify search';
-    this.bdd = bdd
+    this.bdd = bdd;
   }
 
   mount(target?: HTMLElement): void {
