@@ -114,37 +114,47 @@ def segment():
             # Sample the frames and predict their emotions
             cap = cv2.VideoCapture(video_path, cv2.CAP_FFMPEG)
             num_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-            sample_interval = max(num_frames // num_captures, 1)
-            emotions = []
-            for i in range(num_frames):
-                # Set the frame position to sample
-                cap.set(cv2.CAP_PROP_POS_FRAMES, i * sample_interval)
+            # sample every 2 minutes
+            fps = int(cap.get(cv2.CAP_PROP_FPS))
+            segment_interval = fps * 60
 
-                # Read the frame
-                ret, frame = cap.read()
-                if not ret:
-                    break
+            segment_emotions = []
+            for i in range(0, num_frames, segment_interval):
+                segment_frames = []
+                for j in range(num_captures):
+                    # Set the frame position to sample
+                    cap.set(cv2.CAP_PROP_POS_FRAMES, i + j * (segment_interval // 5))
 
-                print('Predicting emotion for frame {}'.format(i))
+                    # Read the frame
+                    ret, frame = cap.read()
+                    if not ret:
+                        break
 
-                # Pass the frame through the pre-trained model to get the emotion
-                emotion = predict_emotion(model, frame)
+                    print('Predicting emotion for frame {}'.format(i + j))
 
-                print('Emotion: {} - %: '.format(get_emotion_label(emotion)), emotion[np.argmax(emotion)])
+                    # Pass the frame through the pre-trained model to get the emotion
+                    emotion = predict_emotion(model, frame)
 
-                emotions.append(emotion)
+                    print('Emotion: {} - %: '.format(get_emotion_label(emotion)), emotion[np.argmax(emotion)])
 
-            # Get the average emotion across all frames
-            emotions = np.array(emotions)
-            avg_emotion = np.mean(emotions, axis=0)
+                    segment_frames.append(emotion)
 
-            # Get the emotion label and accuracy
-            emotion_label = get_emotion_label(avg_emotion)
-            accuracy = avg_emotion[np.argmax(avg_emotion)]
+                # Get the average emotion for the segment
+                segment_frames = np.array(segment_frames)
+                segment_avg_emotion = np.mean(segment_frames, axis=0)
+
+                segment_emotions.append(segment_avg_emotion)
+
+            # Get the emotion label and accuracy for the entire video
+            segment_emotions = np.array(segment_emotions)
+            # tranform segment emotions to a list of labels
+            segments = [get_emotion_label(emotion) for emotion in segment_emotions]
+            # get accuracy for each segment
+            segment_accuracies = [float(emotion[np.argmax(emotion)]) for emotion in segment_emotions]
 
             end = time.time()
 
-            return jsonify({'emotion': emotion_label, 'accuracy': float(accuracy), 'time': (end - start)})
+            return jsonify({'segment_emotions': segments, 'segment_accuracy': segment_accuracies, 'time': (end - start)})
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
