@@ -232,27 +232,31 @@ const video = {
 const musicTitles = writable([
   {
     label: emotionsLabel[0],
-    title: 'My alert song',
+    title: 'My '+ emotionsLabel[0] +' song',
   },
   {
     label: emotionsLabel[1],
-    title: 'My elated song',
+    title: 'My '+ emotionsLabel[1] +' song',
   },
   {
     label: emotionsLabel[2],
-    title: 'My relaxed song',
+    title: 'My '+ emotionsLabel[2] +' song',
   },
   {
     label: emotionsLabel[3],
-    title: 'My nervous song',
+    title: 'My '+ emotionsLabel[3] +' song',
   },
   {
     label: emotionsLabel[4],
-    title: 'My excited song',
+    title: 'My '+ emotionsLabel[4] +' song',
   },
   {
     label: emotionsLabel[5],
-    title: 'My depressed song',
+    title: 'My '+ emotionsLabel[5] +' song',
+  },
+  {
+    label: emotionsLabel[6],
+    title: 'My '+ emotionsLabel[6] +' song',
   },
 ]);
 
