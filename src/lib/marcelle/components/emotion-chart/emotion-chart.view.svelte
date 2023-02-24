@@ -184,6 +184,7 @@ function onClick(event) {
 
 
 <button on:click={getRecommendedMusics}>Get recommendations</button>  
+    {/if}  
   </div>
-  {/if}  
+  
 </ViewContainer>
