@@ -136,7 +136,7 @@ const sendToRetrain = async (img: ImageData) => {
   // append file to form data
   const formData = new FormData();
   formData.append('image', file);
-  formData.append('label', 'Happy');
+  formData.append('label', label.$value.value);
 
   const res = await fetch('http://localhost:5000/retrain', {
     method: 'POST',
@@ -151,6 +151,12 @@ input.$images
   .subscribe(async (img) => {
     const res = await sendToRetrain(img);
     console.log(res);
+    const { status } = res;
+
+    if (status === 'success') {
+      // eslint-disable-next-line no-alert
+      alert(`Successfully added ${label.$value.value} instance to training set`);
+    }
   });
 
 await trainingSet.ready;

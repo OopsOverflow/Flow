@@ -206,7 +206,7 @@ def retrain():
         # remove extra dimensions and reshape image
         img = np.expand_dims(img, axis=-1)
         img = np.expand_dims(img, axis=0)
-        img = img.reshape((-1, 48, 48, 1))
+        img = img.reshape((48, 48, 1))
 
         # preprocess image data
         img = img.astype('float32') / 255.0
