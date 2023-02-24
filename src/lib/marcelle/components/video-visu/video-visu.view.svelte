@@ -4,7 +4,7 @@
   import {derived, get} from 'svelte/store';
   import type {Writable } from 'svelte/store';
   import type { VideoParsed } from './video-visu.component';
-  import {afterUpdate} from "svelte";
+  import {afterUpdate, onMount} from "svelte";
 
   export let title: string;
   export let videoParsedStore: Writable<VideoParsed>;
@@ -112,12 +112,16 @@
     });
   }
 
+  onMount(() => {
+    suscribeFunction();
+  });
+
 </script>
 
 <ViewContainer {title}>
   <!--<h4 class="py-6">{videoParsed.name}</h4>-->
   {#if $videoPartStore}
-  <div id="slot" class="relative" use:displayParts use:updateVideoParts></div>
+  <div id="slot" class="relative" use:displayParts></div>
   {/if}
   <div class="py-4">Current label : {$currentLabel}</div>
 </ViewContainer>
