@@ -5,7 +5,7 @@ import {
   button,
   dataset,
   dataStore,
-  textInput,
+  select,
   webcam,
   text,
   datasetTable,
@@ -74,11 +74,31 @@ export const emotions = {
   colors: emotionsColors,
 };
 
+/**
+ * All the music titles from the dataset
+ * Edit this object with set() to change the music data (! replace old data))
+ * Currently is dummy data
+ */
+const musicData = writable({
+  alert: ['My alert song 1', 'My alert song 2', 'My alert song 3'],
+  excited: ['My excited song 1', 'My excited song 2'],
+  elated: ['My elated song 1', 'My elated song 2', 'My elated song 3'],
+  happy: ['My happy song 1', 'My happy song 2', 'My happy song 3', 'My happy song 4'],
+  contented: [
+    'My contented song 1',
+    'My contented song 2',
+    'My contented song 3',
+    'My contented song 4',
+  ],
+  nervous: ['My nervous song 1', 'My nervous song 2', 'My nervous song 3'],
+  relaxed: ['My relaxed song 1', 'My relaxed song 2'],
+});
+
 export const input = webcam({ width: 500, height: 500 });
 
 const featureExtractor = mobileNet();
 
-export const label = textInput();
+export const label = select(emotionsLabel);
 label.title = 'Instance label';
 
 export const audioTitle = text(`No music selected`);
@@ -183,23 +203,6 @@ captureWebcam.$pressed.subscribe((x) => {
 //https://echarts.apache.org/en/index.html
 //https://echarts.apache.org/examples/en/editor.html?c=line-polar&lang=js
 
-/**
- * Edit this object with set() to change the music data (! replace old data))
- */
-const musicData = writable({
-  alert: ['My alert song 1', 'My alert song 2', 'My alert song 3'],
-  excited: ['My excited song 1', 'My excited song 2'],
-  elated: ['My elated song 1', 'My elated song 2', 'My elated song 3'],
-  happy: ['My happy song 1', 'My happy song 2', 'My happy song 3', 'My happy song 4'],
-  contented: [
-    'My contented song 1',
-    'My contented song 2',
-    'My contented song 3',
-    'My contented song 4',
-  ],
-  nervous: ['My nervous song 1', 'My nervous song 2', 'My nervous song 3'],
-  relaxed: ['My relaxed song 1', 'My relaxed song 2'],
-});
 
 export const emotionChartVisu = emotionChart(musicData, emotionsColors);
 
@@ -234,6 +237,7 @@ const $predictions = input.$images
 
 export const plotResults = confidencePlot($predictions);
 
+//Currently dummy title. Change with the music title of the audio file
 export const musicPlayerComponent = musicPlayer(new Audio(), 'The perfect music for my mood :)');
 
 // -----------------------------------------------------------
@@ -253,6 +257,11 @@ const video = {
   ],
 };
 
+/**
+ * Specific data from the video analysed
+ * Edit this object with set() to change the music data (! replace old data))
+ * Currently is dummy data
+ */
 const musicTitles = writable([
   {
     label: emotionsLabel[0],
@@ -279,6 +288,7 @@ const musicTitles = writable([
     title: 'My depressed song',
   },
 ]);
+
 
 export const videoChart = videoVisu(video, emotions.colors);
 //Call to change the video
