@@ -54,4 +54,8 @@ export class VideoVisu extends Component {
     this.videoParsedStore.set(video);
     this.title = get(this.videoParsedStore).name;
   }
+
+  destroy() {
+    super.destroy();
+  }
 }

@@ -31,42 +31,16 @@ import { writable } from 'svelte/store';
 // DATA MANAGEMENT
 // -----------------------------------------------------------
 
-const emotionsLabel = [
-  'alert',
-  'excited',
-  'elated',
-  'happy',
-  'contented',
-  'serene',
-  'relaxed',
-  'calm',
-  'bored',
-  'sluggish',
-  'depressed',
-  'sad',
-  'upset',
-  'stressed',
-  'nervous',
-  'tense',
-];
+const emotionsLabel = ['Angry', 'Disgust', 'Fear', 'Happy', 'Neutral', 'Sad', 'Surprise'];
 
 const emotionsColors = {
-  alert: '#e59400',
-  excited: '#ffae19',
-  elated: '#ffc966',
-  happy: '#ffea00',
-  contented: '#b7cc99',
-  serene: '#94b266',
-  relaxed: '#5e8c19',
-  calm: '#4d8000',
-  bored: '#cccccc',
-  sluggish: '#b2b2b2',
-  depressed: '#999999',
-  sad: '#808080',
-  upset: '#b20000',
-  stressed: '#ff0000',
-  nervous: '#ff7f7f',
-  tense: '#ffb2b2',
+  Surprise: '#ffae19',
+  Happy: '#ffea00',
+  Neutral: '#4d8000',
+  Disgust: '#f36c02',
+  Sad: '#808080',
+  Angry: '#b20000',
+  Fear: '#000000',
 };
 
 export const emotions = {
@@ -80,18 +54,19 @@ export const emotions = {
  * Currently is dummy data
  */
 const musicData = writable({
-  alert: ['My alert song 1', 'My alert song 2', 'My alert song 3'],
-  excited: ['My excited song 1', 'My excited song 2'],
-  elated: ['My elated song 1', 'My elated song 2', 'My elated song 3'],
-  happy: ['My happy song 1', 'My happy song 2', 'My happy song 3', 'My happy song 4'],
-  contented: [
-    'My contented song 1',
-    'My contented song 2',
-    'My contented song 3',
-    'My contented song 4',
+  Neutral: ['My Neutral song 1', 'My Neutral song 2', 'My Neutral song 3'],
+  Happy: ['My happy song 1', 'My happy song 2', 'My happy song 3', 'My happy song 4'],
+  Sad: ['My sad song 1', 'My sad song 2'],
+  Angry: [
+    'My angry song 1',
+    'My angry song 2',
+    'My angry song 3',
+    'My angry song 4',
+    'My angry song 5',
   ],
-  nervous: ['My nervous song 1', 'My nervous song 2', 'My nervous song 3'],
-  relaxed: ['My relaxed song 1', 'My relaxed song 2'],
+  Fear: ['My fear song 1'],
+  Surprise: ['My surprise song 1', 'My surprise song 2', 'My surprise song 3'],
+  Disgust: [],
 });
 
 
@@ -102,12 +77,8 @@ const featureExtractor = mobileNet();
 export const label = select(emotionsLabel);
 label.title = 'Instance label';
 
-export const audioTitle = text(`No music selected`);
-audioTitle.title = 'Music title';
-
-export const audioUpload = fileUpload();
-audioUpload.title = 'Upload audio files';
-audioUpload.$files.subscribe((x) => audioTitle.$value.set(x[0].name));
+export const videoTitle = text(`No video selected`);
+videoTitle.title = 'Your uploaded video';
 
 export const captureWebcam = button('Hold to record instances');
 captureWebcam.title = 'Capture webcam instances to the training set';
@@ -135,8 +106,8 @@ audioTrainingSet.$changes
                             })
                             return oldValue;
                           });
-                          
-                        })                     
+
+                        })
                       });
 
 export const audioTrainingSetBrowser = datasetTable(audioTrainingSet);
@@ -193,15 +164,6 @@ input.$images
     });
   });
 
-captureAudio.$click.sample(audioUpload.$files).subscribe((x) => {
-  audioTrainingSet
-    .create({
-      x: x[0].name,
-      y: label.$value.value,
-    })
-    .then((r) => console.log(r));
-});
-
 await trainingSet.ready;
 
 captureWebcam.$pressed.subscribe((x) => {
@@ -219,7 +181,6 @@ captureWebcam.$pressed.subscribe((x) => {
 //https://marcelle.dev/api/components/data-displays.html#datasettable
 //https://echarts.apache.org/en/index.html
 //https://echarts.apache.org/examples/en/editor.html?c=line-polar&lang=js
-
 
 export const emotionChartVisu = emotionChart(musicData, emotionsColors);
 
@@ -266,11 +227,11 @@ const video = {
   length: 120,
   parts: [
     { label: emotionsLabel[0], start: 0, end: 10 },
-    { label: emotionsLabel[2], start: 10, end: 30 },
-    { label: emotionsLabel[6], start: 30, end: 50 },
-    { label: emotionsLabel[14], start: 50, end: 60 },
-    { label: emotionsLabel[1], start: 60, end: 100 },
-    { label: emotionsLabel[10], start: 100, end: 120 },
+    { label: emotionsLabel[1], start: 10, end: 30 },
+    { label: emotionsLabel[2], start: 30, end: 50 },
+    { label: emotionsLabel[3], start: 50, end: 60 },
+    { label: emotionsLabel[4], start: 60, end: 100 },
+    { label: emotionsLabel[5], start: 100, end: 120 },
   ],
 };
 
@@ -285,27 +246,26 @@ const musicTitles = writable([
     title: 'My alert song',
   },
   {
-    label: emotionsLabel[2],
+    label: emotionsLabel[1],
     title: 'My elated song',
   },
   {
-    label: emotionsLabel[6],
+    label: emotionsLabel[2],
     title: 'My relaxed song',
   },
   {
-    label: emotionsLabel[14],
+    label: emotionsLabel[3],
     title: 'My nervous song',
   },
   {
-    label: emotionsLabel[1],
+    label: emotionsLabel[4],
     title: 'My excited song',
   },
   {
-    label: emotionsLabel[10],
+    label: emotionsLabel[5],
     title: 'My depressed song',
   },
 ]);
-
 
 export const videoChart = videoVisu(video, emotions.colors);
 //Call to change the video
@@ -318,3 +278,42 @@ export const musicTitlesComponent = listVisu(videoChart.currentLabel, musicTitle
 export const plotResultsVideo = confidencePlot($predictions);
 
 export const songSearch = spotifySearch(audioTrainingSet);
+
+const postVideo = async (videoFile: File) => {
+  const formData = new FormData();
+  formData.append('file', videoFile);
+
+  const res = await fetch('http://localhost:5000/segment', {
+    method: 'POST',
+    body: formData,
+  });
+
+  const response = await res.json();
+  return response;
+};
+
+let videoResult = null as {
+  segment_emotions: string[];
+  segment_accuracy: number[];
+  time: number;
+};
+export const videoUpload = fileUpload();
+videoUpload.title = 'Upload your video file';
+videoUpload.$files.subscribe(async (x) => {
+  videoTitle.$value.set(x[0].name);
+  videoResult = await postVideo(x[0]);
+
+  const newVideo = {
+    name: 'My video',
+    length: videoResult?.segment_emotions.length || 0,
+    parts: videoResult?.segment_emotions.map((emotion, index) => ({
+      label: emotion as (typeof emotionsLabel)[number],
+      start: index * 120,
+      end: (index + 1) * 120,
+    })),
+  };
+
+  if (videoResult) {
+    videoChart.setVideo(newVideo);
+  }
+});

@@ -42,7 +42,7 @@
       }
 
       try {
-        const data = await spotifyApi.searchTracks(input);
+        const data = await spotifyApi.searchTracks(input) as any;
         searchResults = data.body.tracks.items.map((track : any) => ({
           id: track.id,
           name: track.name,
@@ -102,8 +102,10 @@ function handleKeydownLi(event: KeyboardEvent,music:any,myId:number) {
     export let title: string;
     export let bdd:any
 
-  </script>
- <style>
+</script>
+
+
+<style>
   .search {
  position: relative;
 }

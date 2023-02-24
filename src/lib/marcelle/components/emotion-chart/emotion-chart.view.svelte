@@ -125,7 +125,7 @@ function onClick(event) {
     <div class='mb-2'>
       Musics labeled with : {$currentLabel}
     </div>
-    {#if $currentLabel != 'None'}
+    {#if $currentLabel !== 'None'}
       {#each $musicData[$currentLabel] as musicTitle}
         <div>
           {musicTitle}
@@ -135,6 +135,6 @@ function onClick(event) {
       <div>
         Please select an emotion by clicking on the chart
       </div>
-    {/if}    
+    {/if}
   </div>
 </ViewContainer>

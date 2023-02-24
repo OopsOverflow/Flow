@@ -5,8 +5,8 @@ import {
   input,
   label,
   trainingSetBrowser,
-  audioUpload,
-  audioTitle,
+  videoUpload,
+  videoTitle,
   audioTrainingSetBrowser,
   modelParams,
   trainButton,
@@ -34,7 +34,7 @@ const dash = dashboard({
 
 dash
   .page('Data Management')
-  .sidebar(input, audioUpload, audioTitle)
+  .sidebar(input)
   .use(
     [label, captureWebcam, captureAudio],
     [trainingSetBrowser, audioTrainingSetBrowser, emotionChartVisu],
@@ -44,7 +44,7 @@ dash.page('Training').sidebar(trainButton, progress).use(modelParams, plotTraini
 dash.page('Real-time Prediction').sidebar(input).use(predToggle, musicPlayerComponent, plotResults);
 dash
   .page('Video Analysis')
-  .sidebar(input)
+  .sidebar(videoUpload, videoTitle)
   .use(videoChart, [musicTitlesComponent, emotionLegend], plotResultsVideo);
 
 dash.settings.dataStores(store).datasets(trainingSet).models(classifier);

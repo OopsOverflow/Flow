@@ -66,7 +66,7 @@
     let totalWidthInSec = videoParsed.length;
     let partWidthInSec = videoPart.end - videoPart.start;
 
-    return (partWidthInSec / totalWidthInSec) * 90;
+    return (partWidthInSec / totalWidthInSec) * 40;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -86,7 +86,7 @@
 
 <ViewContainer {title}>
   <!--<h4 class="py-6">{videoParsed.name}</h4>-->
-  <div id="slot" class="relative" use:displayParts></div>
+  <div id="slot" class="relative" use:displayParts use:updateVideoParts></div>
   <div class="py-4">Current label : {$currentLabel}</div>
 </ViewContainer>
 
