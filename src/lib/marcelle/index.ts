@@ -118,7 +118,7 @@ function dataURLtoFile(dataurl, filename) {
   return new File([u8arr], filename, { type: mime });
 }
 
-const getEmotion = async (img: ImageData) => {
+const sendToRetrain = async (img: ImageData) => {
   console.log(img.height, img.width);
   // convert imageData to file
   const canvas = document.createElement('canvas');
@@ -136,25 +136,21 @@ const getEmotion = async (img: ImageData) => {
   // append file to form data
   const formData = new FormData();
   formData.append('image', file);
+  formData.append('label', 'Happy');
 
-  const res = await fetch('http://localhost:5000/predict', {
+  const res = await fetch('http://localhost:5000/retrain', {
     method: 'POST',
     body: formData,
   });
 
-  const { emotion, accuracy } = await res.json();
-  return { emotion, accuracy };
+  return res.json();
 };
 
 input.$images
   .filter(() => captureWebcam.$pressed.value)
   .subscribe(async (img) => {
-    const emotion = await getEmotion(img);
-    trainingSet.create({
-      x: await featureExtractor.process(img),
-      y: emotion.emotion,
-      thumbnail: input.$thumbnails.value,
-    });
+    const res = await sendToRetrain(img);
+    console.log(res);
   });
 
 await trainingSet.ready;

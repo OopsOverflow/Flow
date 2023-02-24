@@ -173,11 +173,15 @@ def retrain():
     try:
         model = load_custom_model()
 
-        data = request.json['data']
+        # data = request.json['data']
+
+        print(request.form['label'])
+
+        label_map = {'Angry': 0, 'Disgust': 1, 'Fear': 2, 'Happy': 3, 'Neutral': 4, 'Sad': 5, 'Surprise': 6}
 
         # Ajouter une nouvelle couche de sortie
         num_classes = 7
-        model.add(Dense(num_classes, activation='softmax'))
+        model.add(Dense(num_classes, activation='softmax', name='predictions'))
 
         # Congeler les couches existantes
         for layer in model.layers[:-1]:
@@ -189,16 +193,31 @@ def retrain():
                       metrics=['accuracy'])
 
         # Charger les nouvelles images
-        new_images_dir = 'new_images'
         img_width, img_height = 48, 48
 
         X = []
         y = []
 
-        for item in data:
-            img = load_img(item["image"], grayscale=True, target_size=(img_width, img_height))
-            X.append(img_to_array(img))
-            y.append(item["label"].title())
+        # load image from request using OpenCV
+        img_file = request.files['image']
+        img = cv2.imdecode(np.frombuffer(img_file.read(), np.uint8), cv2.IMREAD_GRAYSCALE)
+        img = cv2.resize(img, (48, 48))
+
+        # remove extra dimensions and reshape image
+        img = np.expand_dims(img, axis=-1)
+        img = np.expand_dims(img, axis=0)
+        img = img.reshape((-1, 48, 48, 1))
+
+        # preprocess image data
+        img = img.astype('float32') / 255.0
+
+        X.append(img)
+
+        # get the label from the file name
+        label_str = request.form['label']
+        label_int = label_map[label_str]
+        y.append(label_int)
+
 
         X = np.array(X)
         y = np.array(y)

@@ -36,12 +36,8 @@ dash.page('Training').sidebar(input, label).use(captureWebcam, trainingSetBrowse
 
 dash
   .page('Data Management')
-  .sidebar(input)
-  .use(
-    [label, captureWebcam, captureAudio],
-    [trainingSetBrowser, audioTrainingSetBrowser, emotionChartVisu],
-    [songSearch],
-  );
+  .sidebar(label, songSearch)
+  .use([audioTrainingSetBrowser, emotionChartVisu]);
 
 dash.page('Real-time Prediction').sidebar(input).use(predToggle, musicPlayerComponent, plotResults);
 dash
