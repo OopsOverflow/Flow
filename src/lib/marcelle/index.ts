@@ -54,18 +54,12 @@ export const emotions = {
  * Currently is dummy data
  */
 const musicData = writable({
-  Neutral: ['My Neutral song 1', 'My Neutral song 2', 'My Neutral song 3'],
-  Happy: ['My happy song 1', 'My happy song 2', 'My happy song 3', 'My happy song 4'],
-  Sad: ['My sad song 1', 'My sad song 2'],
-  Angry: [
-    'My angry song 1',
-    'My angry song 2',
-    'My angry song 3',
-    'My angry song 4',
-    'My angry song 5',
-  ],
-  Fear: ['My fear song 1'],
-  Surprise: ['My surprise song 1', 'My surprise song 2', 'My surprise song 3'],
+  Neutral: [],
+  Happy: [],
+  Sad: [],
+  Angry: [],
+  Fear: [],
+  Surprise: [],
   Disgust: [],
 });
 

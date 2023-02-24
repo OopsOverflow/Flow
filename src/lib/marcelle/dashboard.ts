@@ -32,6 +32,8 @@ const dash = dashboard({
   closable: true,
 });
 
+dash.page('Training').sidebar(input, label).use(captureWebcam, trainingSetBrowser, plotTraining);
+
 dash
   .page('Data Management')
   .sidebar(input)
@@ -40,7 +42,7 @@ dash
     [trainingSetBrowser, audioTrainingSetBrowser, emotionChartVisu],
     [songSearch],
   );
-dash.page('Training').sidebar(trainButton, progress).use(modelParams, plotTraining);
+
 dash.page('Real-time Prediction').sidebar(input).use(predToggle, musicPlayerComponent, plotResults);
 dash
   .page('Video Analysis')
