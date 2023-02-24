@@ -177,7 +177,7 @@ captureWebcam.$pressed.subscribe((x) => {
 //https://echarts.apache.org/en/index.html
 //https://echarts.apache.org/examples/en/editor.html?c=line-polar&lang=js
 
-export const emotionChartVisu = emotionChart(musicData, emotionsColors);
+export const emotionChartVisu = emotionChart(musicData, emotionsColors,audioTrainingSet);
 
 // -----------------------------------------------------------
 // TRAINING
