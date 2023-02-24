@@ -9,7 +9,7 @@
   export let musicData: Writable<MusicList>;
   export let currentLabel: Writable<string>;
   export let emotionsColors: Record<string, string>;
-  export let bdd
+  export let bdd;
 
 
   //let chart: ChartJS;
@@ -24,10 +24,10 @@
     .then(async function(liste){console.log("liste",liste);
       musicData  = liste.data.map(function(dictionnaire){
         return {"id":dictionnaire.ide};
-      })
+      });
       console.log("music1",musicData);
       const numRecommendations = 5;
-    console.log("appel",{ music_data: musicData, num_recommendations: numRecommendations })
+    console.log("appel",{ music_data: musicData, num_recommendations: numRecommendations });
     const response = await fetch('http://127.0.0.1:5000/recommendation', {
       method: 'POST',
       headers: {
@@ -38,7 +38,7 @@
 
     const json = await response.json();
     recommendedMusics = json.recommended_musics;
-    })
+    });
   
     
   }
@@ -175,7 +175,7 @@ function onClick(event) {
     <h1>List of music recommendations :</h1>
 
 {#each recommendedMusics as music}
-  <div on:click={() => { bdd.create({ide:music.id, x:music.name,y:$currentLabel,artist:music.artist}) ;    selectMusic(music)}}>
+  <div on:click={() => { bdd.create({x:music.name,y:$currentLabel,artist:music.artist}) ;    selectMusic(music);}}>
     <h2>{music.name}</h2>
     <p>{music.artists}</p>
   </div>
@@ -184,7 +184,6 @@ function onClick(event) {
 
 
 <button on:click={getRecommendedMusics}>Get recommendations</button>  
-    {/if}  
-  </div>
   
+  {/if}  
 </ViewContainer>
