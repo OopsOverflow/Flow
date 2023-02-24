@@ -1,16 +1,12 @@
 import { dashboard } from '@marcellejs/core';
 import {
   captureWebcam,
-  captureAudio,
   input,
   label,
   trainingSetBrowser,
   videoUpload,
   videoTitle,
   audioTrainingSetBrowser,
-  modelParams,
-  trainButton,
-  progress,
   plotTraining,
   predToggle,
   plotResults,

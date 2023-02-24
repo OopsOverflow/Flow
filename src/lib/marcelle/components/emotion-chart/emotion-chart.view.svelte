@@ -38,9 +38,9 @@
 
     const json = await response.json();
     recommendedMusics = json.recommended_musics;
-    });
-  
-    
+    })
+
+
   }
   function selectMusic(music) {
     selectedMusics = [...selectedMusics, music];
@@ -142,7 +142,7 @@ function onClick(event) {
 
   onMount(() => {
     registerData();
-    
+
 
 
   });
@@ -170,7 +170,7 @@ function onClick(event) {
       <div>
         Please select an emotion by clicking on the chart
       </div>
-    
+
 
     <h1>List of music recommendations :</h1>
 
@@ -183,7 +183,7 @@ function onClick(event) {
 
 
 
-<button on:click={getRecommendedMusics}>Get recommendations</button>  
-  
-  {/if}  
+<button on:click={getRecommendedMusics}>Get recommendations</button>
+
+  {/if}
 </ViewContainer>
