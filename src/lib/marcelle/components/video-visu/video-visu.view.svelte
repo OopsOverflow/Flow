@@ -86,7 +86,9 @@
 
 <ViewContainer {title}>
   <!--<h4 class="py-6">{videoParsed.name}</h4>-->
+  {#if $videoPartStore}
   <div id="slot" class="relative" use:displayParts use:updateVideoParts></div>
+  {/if}
   <div class="py-4">Current label : {$currentLabel}</div>
 </ViewContainer>
 
