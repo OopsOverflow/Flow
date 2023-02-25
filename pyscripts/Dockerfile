@@ -8,7 +8,7 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Install Flask
-RUN pip install flask flask-cors gunicorn spotipy
+RUN pip install flask flask-cors gunicorn spotipy python-dotenv
 
 # Install numpy
 RUN pip install numpy

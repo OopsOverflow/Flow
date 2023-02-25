@@ -13,6 +13,9 @@ from tensorflow.keras.preprocessing.image import img_to_array, load_img
 from flask_cors import CORS, cross_origin
 import tempfile
 
+from dotenv import load_dotenv # development only
+load_dotenv() # development only
+
 def connection_spotify():
     # Configuration de l'authentification Spotify
     auth_manager = SpotifyClientCredentials(
@@ -167,7 +170,7 @@ def segment():
         tf.keras.backend.clear_session()
 
 
-@app.route('/retrain', methods=['POST'])
+@app.route('/retrain', methods=['POST'] )
 @cross_origin(origin='*')
 def retrain():
     try:

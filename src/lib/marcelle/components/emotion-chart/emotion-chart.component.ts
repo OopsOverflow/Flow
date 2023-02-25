@@ -19,7 +19,7 @@ export class EmotionChart extends Component {
   musicData: Writable<MusicList>;
   currentLabel: Writable<string> = writable('None');
   emotionsColors: Record<string, string>;
-  bdd: any
+  bdd: any;
 
   constructor(musicData: Writable<MusicList>, emotionsColors: Record<string, string>,bdd:any) {
     super();

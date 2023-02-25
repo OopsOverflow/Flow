@@ -177,7 +177,7 @@ captureWebcam.$pressed.subscribe((x) => {
 //https://echarts.apache.org/en/index.html
 //https://echarts.apache.org/examples/en/editor.html?c=line-polar&lang=js
 
-export const emotionChartVisu = emotionChart(musicData, emotionsColors,audioTrainingSet);
+export const emotionChartVisu = emotionChart(musicData, emotionsColors, audioTrainingSet);
 
 // -----------------------------------------------------------
 // TRAINING
@@ -238,31 +238,31 @@ const video = {
 const musicTitles = writable([
   {
     label: emotionsLabel[0],
-    title: 'My '+ emotionsLabel[0] +' song',
+    title: 'My ' + emotionsLabel[0] + ' song',
   },
   {
     label: emotionsLabel[1],
-    title: 'My '+ emotionsLabel[1] +' song',
+    title: 'My ' + emotionsLabel[1] + ' song',
   },
   {
     label: emotionsLabel[2],
-    title: 'My '+ emotionsLabel[2] +' song',
+    title: 'My ' + emotionsLabel[2] + ' song',
   },
   {
     label: emotionsLabel[3],
-    title: 'My '+ emotionsLabel[3] +' song',
+    title: 'My ' + emotionsLabel[3] + ' song',
   },
   {
     label: emotionsLabel[4],
-    title: 'My '+ emotionsLabel[4] +' song',
+    title: 'My ' + emotionsLabel[4] + ' song',
   },
   {
     label: emotionsLabel[5],
-    title: 'My '+ emotionsLabel[5] +' song',
+    title: 'My ' + emotionsLabel[5] + ' song',
   },
   {
     label: emotionsLabel[6],
-    title: 'My '+ emotionsLabel[6] +' song',
+    title: 'My ' + emotionsLabel[6] + ' song',
   },
 ]);
 
@@ -301,6 +301,8 @@ videoUpload.title = 'Upload your video file';
 videoUpload.$files.subscribe(async (x) => {
   videoTitle.$value.set(x[0].name);
   videoResult = await postVideo(x[0]);
+
+  console.log(videoResult);
 
   const newVideo = {
     name: 'My video',
